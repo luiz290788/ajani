@@ -1,0 +1,104 @@
+<div card ng-show="tournament && tournament.status == 1">
+  <h3>{{tournament.name}}</h3>
+  <p>Date: {{tournament.date_time}}</p>
+  <p>Available seats: {{tournament.available_seats}}</p>
+  <a ng-click="subscribe()" ng-show="loggedIn && !tournament.user_subscribed">subscribe >></a>
+  <p ng-show="!loggedIn">Login to subscribe</p>
+</div>
+
+<div card class="tournament-participants"
+     ng-show="tournament && (tournament.status == 1 || tournament.status == 5)"
+     ng-repeat="participant in tournament.participants">
+  <div class="ranking-bg ranking-{{participant.ranking}}">
+    <div>
+      <span ng-show="tournament.status == 5" class="participant-ranking">{{participant.ranking}}º</span>
+      <img class="user-image" ng-src="{{participant.image}}"
+           alt="{{participant.name}}" title="{{participant.name}}"/>
+      <span>{{participant.name}}</span>
+    </div>
+  </div>
+</div>
+
+<div card id="tournament-standings"
+     ng-show="tournament.status >= 4">
+  <h3>{{tournament.name}}</h3>
+  <table>
+    <thead>
+      <tr>
+        <th class="score">#</th>
+        <th class="player">Player</th>
+        <th class="score">S</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-repeat="participant in tournament.participants">
+        <td class="score">{{participant.ranking}}º</td>
+        <td class="player">
+          <p>
+            <img class="user-image" ng-src="{{participant.image}}"
+                 alt="{{participant.name}}" title="{{participant.name}}"/>
+            <span>{{participant.name}}</span>
+          </p>
+        </td>
+        <td class="score">{{participant.match_points}}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div card ng-show="tournament.current_round">
+  <h3>Round {{tournament.current_round.number}}</h3>
+  <p class="timer" ng-show="timer">{{timer}}</p>
+</div>
+
+<div card ng-repeat="match in tournament.current_round.matches" class="match" ng-show="tournament.current_round && tournament.current_round.matches">
+  <div class="score-wrapper">
+    <div class="player">
+      <img class="user-image" ng-src="{{match.player1.image}}"
+           alt="{{match.player1.name}}" title="{{match.player1.name}}"/>
+      <p>{{match.player1.name}}</p>
+    </div>
+    <div class="match-score">
+      <p>{{match.player1.match_points}} X {{match.player2.match_points}}</p>
+    </div>
+    <div class="player">
+      <img class="user-image" ng-src="{{match.player2.image}}"
+           alt="{{match.player2.name}}" title="{{match.player2.name}}"/>
+      <p>{{match.player2.name}}</p>
+    </div>
+  </div>
+</div>
+
+<div card id="detailed-results" ng-show="tournament.status > 1">
+  <h3>Tournament Detailed Information</h3>
+  <a ng-show="!isDetailsDisplayed" ng-click="toggleTournamentDetails()">View details</a>
+  <a ng-show="isDetailsDisplayed" ng-click="toggleTournamentDetails()">Close details</a>
+  <table ng-show="isDetailsDisplayed">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>User</th>
+        <th>PMP</th>
+        <th>OMWP</th>
+        <th>PGWP</th>
+        <th>OGWP</th>
+        <th>GP</th>
+        <th>GW</th>
+        <th>GL</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-repeat="participant in tournament.participants">
+        <td>{{participant.ranking}}º</td>
+        <td>{{participant.name}}</td>
+        <td>{{participant.match_points}}</td>
+        <td>{{participant.opponents_match_win_percentage}}</td>
+        <td>{{participant.game_win_percentage}}</td>
+        <td>{{participant.opponents_game_win_percentage}}</td>
+        <td>{{participant.games_played}}</td>
+        <td>{{participant.games_won}}</td>
+        <td>{{participant.games_lost}}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

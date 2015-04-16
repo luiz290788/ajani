@@ -1,0 +1,13 @@
+{
+  "name": "cit-duels-frontend",
+  "version": "0.1.0",
+  "devDependencies": {
+    "gulp": "latest",
+    "gulp-concat": "latest",
+    "gulp-usemin": "latest",
+    "gulp-minify-css": "latest",
+    "gulp-uglify": "latest",
+    "gulp-rev": "latest",
+    "gulp-clean": "latest"
+  }
+}

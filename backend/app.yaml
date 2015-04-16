@@ -1,0 +1,33 @@
+application: cit-duels
+runtime: python27
+threadsafe: true
+api_version: 1
+
+module: backend
+version: 1
+
+handlers:
+  - url: /backend/static/
+    static_dir: static/html
+
+  - url: /backend/.*
+    script: backend.application
+    secure: always
+    login: admin
+
+  - url: /worker/.*
+    script: worker.application
+    secure: always
+
+libraries:
+  - name: webapp2
+    version: latest
+
+  - name: jinja2
+    version: latest
+
+  - name: endpoints
+    version: latest
+
+  - name: pycrypto
+    version: latest

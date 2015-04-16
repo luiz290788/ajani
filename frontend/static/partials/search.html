@@ -1,0 +1,9 @@
+<div id="card-search">
+  <form>
+    <input type="text" ng-model="selectedCard"
+      placeholder="Card Name"
+      typeahead="cardName for cardName in cardSearch($viewValue)"
+      typeahead-loading="loading" class="form-control"
+      typeahead-min-length="3" typeahead-wait-ms="400">
+  </form>
+</div>

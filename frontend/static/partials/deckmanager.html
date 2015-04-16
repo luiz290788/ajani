@@ -1,0 +1,9 @@
+<div card ng-show="loggedIn">
+  <h3>My Decks</h3>
+  <a href="#/deck/add">add deck</a>
+</div>
+<div ng-repeat="deck in decks" card>
+  <h3>{{deck.deck_name}}</h3>
+  <a href="/deck/edit/{{deck.deck_id}}">edit >></a>
+  <a>delete >></a>
+</div>

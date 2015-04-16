@@ -1,0 +1,17 @@
+<div card id="decks" ng-show="false">
+  <h3>My Decks</h3>
+  <p ng-show="!loggedIn">
+    Log in to manage your decks.
+  </p>
+  <a ng-show="loggedIn" href="/deck">manage >></a>
+</div>
+
+<div card id="tournament" ng-show="tournaments"
+     ng-controller="tournamentsListCtrl">
+  <h3>Tournaments</h3>
+  <ul>
+    <li ng-repeat="tournament in tournaments">
+      <a href="/tournament/{{tournament.tournament_id}}">{{tournament.name}}</a>
+    </li>
+  </ul>
+</div>

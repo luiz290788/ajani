@@ -1,0 +1,119 @@
+{% macro write_matches(matches) -%}
+	{% set i = 1 %}
+	{% for match in matches %}
+		{% set y = 1 %}
+		<p>
+		<label for="user_{{ i }}_{{ y }}">{{ match.user_1_name}}</label>
+		{% if tournament.state == 3 %}
+			<input id="user_{{ i }}_{{ y }}" name="user_{{ i }}_{{ y }}" type="number" min="0" max="2" value="{{ match.user_1_score}}"/>
+		{% endif %}
+		{% set y = y + 1 %}
+		<span>X</span>
+		{% if tournament.state == 3 %}
+			<input id="user_{{ i }}_{{ y }}" name="user_{{ i }}_{{ y }}" type="number" min="0" max="2" value="{{ match.user_2_score}}"/>
+		{% endif %}
+		<label for="user_{{ i }}_{{ y }}">{{ match.user_2_name}}</label>
+		</p>
+		{% set i = i + 1 %}
+	{% endfor %}
+{%- endmacro %}
+
+{% macro write_participants(participants) %}
+	<table id="participants">
+		<tbody>
+		{% for participant in participants %}
+			<tr>
+				<td id="{{ participant.id }}">{{participant.name}}</td>
+				{% if tournament.state == 1 %}
+				<td><a href="javascript:void(0)" class="remove-btn" userId="{{participant.id}}">remove</a></td>
+				{% endif %}
+			</tr>
+		{% endfor %}
+		</tbody>
+	</table>
+{%- endmacro %}
+
+{% macro write_rounds(rounds) %}
+	{% for round in rounds %}
+	<div class="round">
+		<h3>Round {{ round.number }}</h3>
+		{% for match in round.matches %}
+			<div class="match">
+				<span class="user user-{{ match.user_1 }}">{{ match.user_1 }}</span>
+				<span class="score">{{ match.score_1 }}</span>
+				<span class="user-separator">X</span>
+				<span class="score">{{ match.score_2 }}</span>
+				<span class="user user-{{ match.user_2 }}">
+				{% if match.user_2 %}
+				{{ match.user_2 }}
+				{% else %}
+				Bye
+				{% endif %}
+				</span>
+			</div>
+		{% endfor %}
+	</div>
+	{% endfor %}
+{%- endmacro %}
+<!DOCTYPE html>
+<html>
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" >
+	<link rel="shortcut icon" href="/images/favicon.ico" type="image/vnd.microsoft.icon">
+
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
+	<script src="/js/backend.js"></script>
+	
+	<link rel="stylesheet" href="/css/backend.css">
+</head>
+<body>
+<div id="tournament-data">
+	<h1>{{ tournament.name }}</h1>
+	<p>Date: {{ tournament.date_time }}</p>
+	<p>Maximum participants: {{ tournament.max_num_participants }}</p>
+	<p>Number of enrolled participants: {{ tournament.num_enrolled }}</p>
+	<p>Seats available: {{ tournament.available_seats }}</p>
+	<p>Participants:</p>
+	{{ write_participants(participants_to_render) }}
+  
+	<form action="/backend/tournament" method="POST">
+		<input type="hidden" name="tournament-key" value="{{ tournament.key.urlsafe() }}">
+		<input type="hidden" name="user-id">
+		<input type="submit" value="Remove User" id="remove-user" class="btn btn-default" name="op"/>
+	</form>
+</div>
+<div id="completed-rounds">
+	{{ write_rounds(completed_rounds) }}
+</div>
+<hr/>
+<div id="current-round">
+	<p>Round started at: {{ round_start_date }}</p>
+	<form action="/backend/tournament" method="POST">
+		<input type="hidden" name="tournament-key" value="{{ tournament.key.urlsafe() }}">
+		{% if tournament.state == 1 %}
+		<input type="submit" class="btn btn-default" name="op" value="Generate Matches"/>
+
+		{% elif tournament.state == 2 %}
+		{{ write_matches(matches) }}
+		<input type="hidden" name="current-round" value="{{ tournament.current_round }}">
+		<input type="submit" class="btn btn-default" name="op" value="Start"/>
+
+		{% elif tournament.state == 3 %}
+		{{ write_matches(matches) }}
+		<input type="hidden" name="current-round" value="{{ tournament.current_round }}">
+		<input type="submit" class="btn btn-default" name="op" value="Save"/>
+		<input type="submit" class="btn btn-default" name="op" value="End Round"/>
+
+		<p>By clicking on Next Round, this current round will be ended and the next Round is going to be generated according to the matches results. If a game is finished by the timer, it will not be considered as valid.</p>
+
+		{% elif tournament.state == 4 %}
+		{% if tournament.current_round < tournament.max_rounds %}
+		<input type="submit" class="btn btn-default" name="op" value="Generate Matches"/>
+		{% endif %}
+		<input type="submit" class="btn btn-default" name="op" value="End Tournament"/>
+		{% endif %}
+	</form>
+	<a href="/backend/tournament">Back to Tournament List</a>
+</div>
+</body>
+</html>

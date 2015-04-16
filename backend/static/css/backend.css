@@ -1,0 +1,51 @@
+#tournament-data {
+	float: left;
+	margin-right: 50px;
+}
+
+.round {
+	border: 1px solid;
+	border-radius: 10px;
+	float: left;
+	margin: 0 10px 10px 0;
+	padding: 0 20px 10px;
+}
+
+.match {
+	margin-bottom: 5px;
+}
+
+.match.active .user {
+  color: blue;
+  font-weight: bold;
+}
+
+.match .user.active {
+  color: green;
+}
+
+.match .user.selected {
+  background-color: yellow;
+}
+
+.match .score {
+	font-weight: bold;
+	font-size: 1.333em; 
+}
+
+.match.duplicated {
+  color: red;
+  font-weight: bold;
+}
+
+hr {
+	clear: both;
+}
+
+#remove-user {
+  display: none;
+}
+
+#delete-tournament-btn {
+  display: none;
+}

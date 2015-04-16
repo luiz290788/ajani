@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" >
+    <link rel="shortcut icon" href="/images/favicon.ico" type="image/vnd.microsoft.icon">
+  </head>
+  <body>
+    <h1>Tournament deleted successfully</h1>
+    <a href="/backend/tournament">Back to Tournament list</a>
+  </body>
+</html>

@@ -1,0 +1,6 @@
+queue:
+- name: SetImporter
+  rate: 5/s
+  max_concurrent_requests: 1
+  bucket_size: 1
+  target: card

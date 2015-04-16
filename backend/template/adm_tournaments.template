@@ -1,0 +1,111 @@
+{% macro write_header() -%}
+  <tr>
+    <th>Tournament Name</th>
+    <th>Date</th>
+    <th># Participants</th>
+    <th># Available Seats</th>
+    <th># Max Rounds</th>
+    <th>Round Duration (min)</th>
+    <th>Format</th>
+    <th>Actions</th>
+  </tr>
+{%- endmacro %}
+
+{% macro write_tournaments(tournaments) -%}
+  {% for tournament in tournaments %}
+    <tr>
+      <td>{{ tournament.name }}</td>
+      <td>{{ tournament.date_time }}</td>
+      <td>{{ tournament.max_num_participants }}</td>
+      <td>{{ tournament.available_seats }}</td>
+      <td>{{ tournament.max_rounds }}</td>
+      <td>{{ tournament.round_duration }}</td>
+      <td>{{ tournament.format }}</td>
+      <td><a href="/backend/tournament?tournament-key={{ tournament.key.urlsafe() }}&round={{ tournament.current_round }}">View</a><span> | </span><a id="{{ tournament.key.urlsafe() }}" class="delete-tournament-link">Delete</a></td>
+    </tr>
+  {% endfor %}
+{%- endmacro %}
+
+{% macro write_table(tournaments) -%}
+<table class="table table-striped table-bordered table-condensed" style="width: 98%; margin: 0 1%;" cellpadding="5px" border="1">
+  {{ write_header() }}
+  {{ write_tournaments(tournaments) }}
+</table>
+{%- endmacro %}
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" >
+    <link rel="shortcut icon" href="/images/favicon.ico" type="image/vnd.microsoft.icon">
+
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css">
+    <link href='//fonts.googleapis.com/css?family=Raleway' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="/css/backend.css">
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/ui-bootstrap-0.10.0.min.js"></script>
+    <script type="text/javascript" src="/js/ui-bootstrap-tpls-0.10.0.min.js"></script>
+    <script src="/js/backend.js"></script>
+  </head>
+  <body>
+    <h1>Create a Torunament</h1>
+    <fieldset collapsed="false" collapsible="true">
+      <form action="/backend/tournament" method="POST" class="form-horizontal">
+        <div class="form-group">
+          <label for="tournament-name" class="col-sm-2 control-label">Tournament Name:</label>
+          <div class="col-sm-9">
+            <input id="tournament-name" name="tournament-name" class="form-control" type="text"/>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="tournament-date" class="col-sm-2 control-label">Date:</label>
+          <div class="col-sm-9">
+            <input id="tournament-date" name="tournament-date" class="form-control" type="date"/>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="tournament-time" class="col-sm-2 control-label">Time:</label>
+          <div class="col-sm-9">
+            <input id="tournament-time" name="tournament-time" class="form-control" type="time"/>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="tournament-participants" class="col-sm-2 control-label">Number of Participants:</label>
+          <div class="col-sm-9">
+            <input id="tournament-participants" name="tournament-participants" class="form-control" type="number" min="1"/>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="tournament-round-dur" class="col-sm-2 control-label">Round Duration:</label>
+          <div class="col-sm-9">
+            <input id="tournament-round-dur" name="tournament-round-dur" class="form-control" type="number" min="1" value="50"/>minutes
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="tournament-format" class="col-sm-2 control-label">Format:</label>
+          <div class="col-sm-9">
+            <select id="tournament-format" name="tournament-format">
+              <option value="standard">Standard</option>
+              <option value="modern">Modern</option>
+              <option value="legacy">Legacy</option>
+            </select>
+          </div>
+        </div>
+        <input type="submit" class="btn btn-default col-sm-offset-9 col-sm-1" value="Create" name="op"/>
+      </form>
+    </fieldset>
+    <div>
+      {{ write_table(tournaments) }}
+
+      <form id="delete-tournament-form" action="/backend/tournament" method="POST">
+        <input type="hidden" name="tournament-key">
+        <input type="submit" value="Delete Tournament" id="delete-tournament-btn" class="btn btn-default" name="op"/>
+      </form>
+    </div>
+    <script type="text/javascript">
+      document.getElementById('tournament-date').valueAsDate = new Date();
+    </script>
+  </body>
+</html>

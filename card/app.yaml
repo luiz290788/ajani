@@ -1,0 +1,12 @@
+application: web-duels
+runtime: python27
+threadsafe: true
+api_version: 1
+
+module: card
+version: 1
+
+handlers:
+  - url: /.*
+    script: main.app
+    secure: always
