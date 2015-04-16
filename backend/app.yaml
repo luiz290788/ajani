@@ -1,4 +1,4 @@
-application: cit-duels
+application: web-duels
 runtime: python27
 threadsafe: true
 api_version: 1
