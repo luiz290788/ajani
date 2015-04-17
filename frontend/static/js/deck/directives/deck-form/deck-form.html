@@ -1,0 +1,32 @@
+<md-content>
+  <md-input-container>
+    <label>Name</label>
+    <input name="name" ng-model="deck.name"/>
+  </md-input-container>
+  <md-input-container>
+    <label>Description</label>
+    <textarea name="description" ng-model="deck.description"></textarea>
+  </md-input-container>
+  <md-autocomplete
+    md-search-text="vm.searchText"
+    md-select-item="vm.selectedCard"
+    md-selected-item-change="vm.setCard(card)"
+    md-items="card in vm.searchCards(vm.searchText)"
+    md-item-text="card.card_name"
+    placeholder="card to add"
+    md-delay="400"
+    md-min-length="3">
+    <span md-highlight-text="ctrl.searchText" md-highlight-flags="^i">{{card.card_name}}</span>
+  </md-autocomplete>
+  <md-input-container>
+	  <label>Copies</label>
+	  <input required type="number" step="1" name="copies" ng-model="vm.copies" min="1" max="4">
+  </md-input-container>
+  <md-button ng-click="vm.addCard()">add</md-button>
+  
+  <md-list>
+    <md-list-item ng-repeat="card in deck.cards">
+      <wd-card-list id="card"></wd-card-list>
+    </md-list-item>
+  </md-list>
+</md-content>

@@ -1,12 +1,16 @@
 application: web-duels
-version: poc
 runtime: python27
-threadsafe: true
+threadsafe: no
 api_version: 1
+
+version: 1
 
 handlers:
   - url: /js/*
     static_dir: static/js
+    
+  - url: /bower_components/*
+    static_dir: static/bower_components
 
   - url: /css/*
     static_dir: static/css
@@ -17,31 +21,6 @@ handlers:
   - url: /partials/*
     static_dir: static/partials
 
-  - url: /_ah/spi/.*
-    script: services.services
-    secure: always
-
-  - url: /callback
-    script: frontend.application
-
-  - url: /backend/.*
-    script: backend.application
-    secure: always
-    login: admin
-
   - url: /.*
-    script: frontend.application
-    secure: always
-
-libraries:
-  - name: webapp2
-    version: latest
-
-  - name: jinja2
-    version: latest
-
-  - name: endpoints
-    version: latest
-
-  - name: pycrypto
-    version: latest
+    static_files: static/html/index.html
+    upload: static/html/index.html

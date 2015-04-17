@@ -8,7 +8,7 @@ var minifyCss = require('gulp-minify-css');
 var clean = require('gulp-clean');
 
 var staticPath = 'static';
-var templatePath = 'templates';
+var htmlPath = path.join(staticPath, 'html');
 var buildPath = 'build';
 
 gulp.task('clean', function() {
@@ -16,26 +16,27 @@ gulp.task('clean', function() {
     .pipe(clean({force: true}));
 });
 
-gulp.task('moveTemplates', ['clean', 'usemin'], function() {
-  return gulp.src(path.join(buildPath, 'static', '*.template'))
+gulp.task('moveHtml', ['clean', 'usemin'], function() {
+  return gulp.src(path.join(buildPath, staticPath, '*.html'))
     .pipe(clean({force: true}))
-    .pipe(gulp.dest(path.join(buildPath, 'templates')));
-})
+    .pipe(gulp.dest(path.join(buildPath, htmlPath)));
+});
 
 gulp.task('usemin', ['clean'], function() {
-  return gulp.src(path.join(templatePath, '*.template'))
+  return gulp.src(path.join(htmlPath, '*.html'))
     .pipe(usemin({
       js: [uglify(), rev()],
       css: [minifyCss(), rev()]
     }))
-    .pipe(gulp.dest(path.join(buildPath, 'static')));
+    .pipe(gulp.dest(path.join(buildPath, staticPath)));
 });
 
 gulp.task('copyApp', ['clean'], function() {
   return gulp.src(['**/*.py', 
                    '*.yaml', 
                    path.join(staticPath, 'img', '*'),
-                   path.join(staticPath, 'partials', '*.html')],
+                   path.join(staticPath, 'partials', '*.html'),
+                   path.join(staticPath, 'js', '**/*.html')],
                   {base: '.'})
     .pipe(gulp.dest(buildPath));
 });
@@ -45,6 +46,6 @@ gulp.task('copyYamls', ['clean'], function() {
     .pipe(gulp.dest(buildPath));
 });
 
-gulp.task('buildApp', ['usemin', 'moveTemplates', 'copyApp', 'copyYamls'])
+gulp.task('buildApp', ['usemin', 'moveHtml', 'copyApp', 'copyYamls'])
 
 gulp.task('default', ['buildApp']);

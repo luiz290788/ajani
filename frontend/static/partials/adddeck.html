@@ -1,70 +1,7 @@
-<div card>
-  <input name="name" ng-model="deck.deck_name" placeholder="Deck name" required>
-  <input type="submit" value="save" ng-click="saveDeck(deck)">
-  <p>Total card: <span>{{totalCards}}</span></p>
-</div>
-
-<div card id="basic-land">
-  <h3>Basic land</h3>
-  <ul>
-    <li>
-      <label for="swamp">
-        <img src="http://mtgjson.com/images/b.png">
-      </label>
-      <input min="0" type="number" ng-model="deck.land.swamp"
-        ng-change="updateTotalCards()">
-    </li>
-    <li>
-      <label for="island">
-        <img src="http://mtgjson.com/images/u.png">
-      </label>
-      <input min="0" type="number" ng-model="deck.land.island"
-        ng-change="updateTotalCards()">
-    </li>
-    <li>
-      <label for="plains">
-        <img src="http://mtgjson.com/images/w.png">
-      </label>
-      <input min="0" type="number" ng-model="deck.land.plains"
-        ng-change="updateTotalCards()">
-    </li>
-    <li>
-      <label for="forrest">
-        <img src="http://mtgjson.com/images/g.png">
-      </label>
-      <input min="0" type="number" ng-model="deck.land.forrest"
-        ng-change="updateTotalCards()">
-    </li>
-    <li>
-      <label for="mountain">
-        <img src="http://mtgjson.com/images/r.png">
-      </label>
-      <input min="0" type="number" ng-model="deck.land.mountain"
-        ng-change="updateTotalCards()">
-    </li>
-  </ul>
-</div>
-
-<div card id="card-search" ng-show="ready">
-  <h3>add card</h3>
-  <div ng-controller="searchCtrl">
-    <input type="text" ng-model="selectedCard"
-      placeholder="Card Name"
-      typeahead="card.card_name for card in cardSearch($viewValue)"
-      typeahead-on-select="addCard($item); emptyField();"
-      typeahead-loading="loading" class="form-control"
-      typeahead-min-length="3" typeahead-wait-ms="400"
-      typeahead-editable="false">
-  </div>
-</div>
-
-<div card class="deck-card" ng-repeat="card in deck.cards">
-  <h4>{{card.card_name}}</h4>
-  <div class="quantity">
-    <label for="quantity">Quantity</label>:
-    <input type="number" name="quantity" ng-model="card.quantity"
-      min="1" max="4" ng-change="updateTotalCards()">
-    <a ng-click="removeCard(card)">remove</a>
-  </div>
-  <img class="card-image" ng-src="http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid={{card.multiverse_id}}&type=card">
-</div>
+<md-whiteframe class="md-whiteframe-z1" layout="column">
+	<md-toolbar>
+	  <h3>Add Deck</h3>
+	</md-toolbar>
+	<wd-deck-form ng-model="vm.deck">
+	</wd-deck-form>
+</md-whiteframe>
