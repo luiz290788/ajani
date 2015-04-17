@@ -11,7 +11,7 @@ from services.model import MagicCard
 from services.card import CARD_INDEX_NAME
 
 MTG_JSON_URL = 'http://mtgjson.com/json/SetCodes.json'
-MTG_JSON_CARD_SET_URL = 'http://mtgjson.com/json/%s-x.json'
+MTG_JSON_CARD_SET_URL = 'http://mtgjson.com/json/%s.json'
 
 SET_IMPORTER_QUEUE = 'SetImporter'
 IMPORTER_TASK_URL = '/import/set/%s'
@@ -25,9 +25,9 @@ def import_all():
     task = taskqueue.Task(url=IMPORTER_TASK_URL % card_set, method='POST')
     tasks.append(task)
     if len(tasks) == 100:
-      queue.add_async(tasks)
+      queue.add(tasks)
       tasks = []
-  queue.add_async(tasks)
+  queue.add(tasks)
 
 def _tokenize_string(phrase):
   tokens = []
@@ -54,23 +54,9 @@ def _search_document(json_card):
   )
   return card_document
 
-def _magic_card(card_set, json_card):
-  card = MagicCard(
-    id=json_card['multiverseid'],
-    multiverse_id=json_card['multiverseid'],
-    name=json_card['name'],
-    set=card_set
-  )
-  if 'colors' in json_card:
-    card.color = json_card['colors']
-  if 'rarity' in json_card:
-    card.rarity = json_card['rarity']
-
-  return card
-
 def _save_batch(index, cards, documents):
-  index.put_async(documents)
-  ndb.put_multi_async(cards)
+  index.put(documents)
+  ndb.put_multi(cards)
 
 def import_set(card_set):
   url = MTG_JSON_CARD_SET_URL % card_set
@@ -80,7 +66,8 @@ def import_set(card_set):
   documents = []
   for json_card in set_data['cards']:
     if 'multiverseid' in json_card:
-      cards.append(_magic_card(card_set, json_card))
+      json_card['set'] = card_set
+      cards.append(MagicCard.from_dict(json_card))
       documents.append(_search_document(json_card))
       if len(documents) >= 200:
         _save_batch(index, cards, documents)
