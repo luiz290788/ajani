@@ -7,7 +7,7 @@
   <md-content>
     <md-list>
       <md-list-item ng-repeat="deck in vm.decks">
-        <span>{{deck.name}}</span>
+        <span ng-click="vm.view(deck)">{{deck.name}}</span>
         <md-button ng-click="vm.edit(deck)">edit</md-button>
         <md-button ng-click="vm.delete(deck)">delete</md-button>
       </md-list-item>

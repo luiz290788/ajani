@@ -13,6 +13,10 @@
       $location.path('/deck/add');
     };
     
+    vm.view = function(deck) {
+      $location.path('/deck/' + deck.id);
+    };
+    
     vm.edit = function(deck) {
       $location.path('/deck/' + deck.id + '/edit');
     };

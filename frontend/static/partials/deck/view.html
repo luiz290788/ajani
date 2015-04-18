@@ -1,1 +1,41 @@
-{{vm.deck}}
+<md-whiteframe class="md-whiteframe-z1" layout="column">
+  <md-toolbar layout-padding>
+    <h3>{{::vm.deck.name}}</h3>
+  </md-toolbar>
+  <md-content layout-padding>
+    <p ng-if="::vm.deck.description">{{::vm.deck.description}}</p>
+    <md-subhead>Cards ({{vm.cards.total}})</md-subhead>
+    <section ng-if="vm.cards.lands.total > 0">
+	    <md-subheader>Lands ({{vm.cards.lands.total}})</md-subheader>
+	    <md-list>
+		    <md-list-item ng-repeat="card in vm.cards.lands.cards">
+		      <span>{{card.copies}} {{card.name}}</span>
+		    </md-list-item>
+		  </md-list>
+	  </section>
+	  <section ng-if="vm.cards.creatures.total > 0">
+      <md-subheader>Creatures ({{vm.cards.creatures.total}})</md-subheader>
+      <md-list>
+        <md-list-item ng-repeat="card in vm.cards.creatures.cards">
+          <span>{{card.copies}} {{card.name}}</span>
+        </md-list-item>
+      </md-list>
+    </section>
+	  <section ng-if="vm.cards.planeswalkers.total > 0">
+      <md-subheader>Planeswalkers ({{vm.cards.planeswalkers.total}})</md-subheader>
+      <md-list>
+        <md-list-item ng-repeat="card in vm.cards.planeswalkers.cards">
+          <span>{{card.copies}} {{card.name}}</span>
+        </md-list-item>
+      </md-list>
+    </section>
+    <section ng-if="vm.cards.other.total > 0">
+      <md-subheader>Other spells ({{vm.cards.other.total}})</md-subheader>
+      <md-list>
+        <md-list-item ng-repeat="card in vm.cards.other.cards">
+          <span>{{card.copies}} {{card.name}}</span>
+        </md-list-item>
+      </md-list>
+    </section>   
+  </md-content>
+</md-whiteframe>
