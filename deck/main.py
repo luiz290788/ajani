@@ -26,6 +26,12 @@ def create_deck():
 
   return json.dumps(_deck_response(deck_obj))
 
+@app.route('/api/deck', methods=['GET'])
+def list_decks():
+  decks = deck.list_deck()
+  result ={'decks': decks}
+  return json.dumps(result)
+
 @app.route('/api/deck/<int:deck_id>', methods=['POST'])
 def update_deck(deck_id):
   log.debug(request.get_json())

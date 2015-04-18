@@ -8,7 +8,9 @@
     return {
       create: create,
       load: load,
-      update: update
+      update: update,
+      list: list,
+      'delete': delete_deck
     };
     
     function load(id) {
@@ -21,6 +23,14 @@
     
     function update(deck) {
       return $http.post('/api/deck/' + deck.id, deck);
+    }
+    
+    function list() {
+      return $http.get('/api/deck');
+    }
+    
+    function delete_deck(id) {
+      return $http.delete('/api/deck/' + id)
     }
   }
 })(angular);

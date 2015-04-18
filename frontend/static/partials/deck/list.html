@@ -1,0 +1,16 @@
+<md-whiteframe class="md-whiteframe-z1" layout="column">
+  <md-toolbar>
+    <h3>Decks</h3>
+    <span flex></span>
+    <md-button ng-click="vm.add()">add</md-button>
+  </md-toolbar>
+  <md-content>
+    <md-list>
+      <md-list-item ng-repeat="deck in vm.decks">
+        <span>{{deck.name}}</span>
+        <md-button ng-click="vm.edit(deck)">edit</md-button>
+        <md-button ng-click="vm.delete(deck)">delete</md-button>
+      </md-list-item>
+    </md-list>
+  </md-content>
+</md-whiteframe>
