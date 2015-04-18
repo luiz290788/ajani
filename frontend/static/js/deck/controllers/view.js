@@ -1,10 +1,10 @@
 (function(angular) {
   angular.module('wd.deck')
-    .controller('viewDeckCtrl', addDeckCtrl);
+    .controller('viewDeckCtrl', viewDeckCtrl);
   
-  addDeckCtrl.$inject = ['$scope', 'deckservices', '$routeParams'];
+  viewDeckCtrl.$inject = ['$scope', 'deckservices', '$routeParams'];
 
-  function addDeckCtrl($scope, deckservices, $routeParams) {
+  function viewDeckCtrl($scope, deckservices, $routeParams) {
     var vm = this;
 
     loadDeck($routeParams.id);
