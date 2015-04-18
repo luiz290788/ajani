@@ -2,7 +2,7 @@ import logging, json
 from flask import Flask
 from flask import request
 from services import card
-from services.card import importer, search
+from services.card import importer, search, standard
 
 log = logging.getLogger(__name__)
 app = Flask(__name__)
@@ -19,6 +19,18 @@ def import_set(card_set):
   importer.import_set(card_set)
   return 'importing set'
 
+@app.route('/import/standard', methods=['POST'])
+def import_standard():
+  log.info('importing standard sets...')
+  standard.build_index()
+  return 'importing standard sets'
+
+@app.route('/import/standard/<card_set>', methods=['POST'])
+def import_standard_set(card_set):
+  log.info('importing set %s' % card_set)
+  standard.import_set(card_set)
+  return 'importing set %s' % card_set
+
 @app.route('/api/card', methods=['GET'])
 def search_cards():
   result = {}
@@ -26,6 +38,16 @@ def search_cards():
     term = request.args['q']
     result['term'] = term 
     result['cards'] = search.do_search(term)
+  return json.dumps(result)
+
+@app.route('/api/card/standard', methods=['GET'])
+def standard_search():
+  result = {}
+  if 'q' in request.args:
+    term = request.args['q']
+    result['term'] = term
+    result['cards'] = standard.do_search(term)
+  
   return json.dumps(result)
 
 @app.route('/api/card/<int:multiverseid>', methods=['GET'])
