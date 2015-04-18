@@ -11,7 +11,7 @@
     };
     
     function search(term) {
-      return $http.get('/api/card', {params: {q: term}});
+      return $http.get('/api/card/standard', {params: {q: term}});
     }
     
     function get(id) {

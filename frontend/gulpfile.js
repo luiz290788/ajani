@@ -35,7 +35,7 @@ gulp.task('copyApp', ['clean'], function() {
   return gulp.src(['**/*.py', 
                    '*.yaml', 
                    path.join(staticPath, 'img', '*'),
-                   path.join(staticPath, 'partials', '*.html'),
+                   path.join(staticPath, 'partials', '**/*.html'),
                    path.join(staticPath, 'js', '**/*.html')],
                   {base: '.'})
     .pipe(gulp.dest(buildPath));

@@ -16,7 +16,7 @@
     placeholder="card to add"
     md-delay="400"
     md-min-length="3">
-    <span md-highlight-text="ctrl.searchText" md-highlight-flags="^i">{{card.card_name}}</span>
+    <span md-highlight-text="vm.searchText" md-highlight-flags="^i">{{card.card_name}}</span> <span>({{card.set}})</span>
   </md-autocomplete>
   <md-input-container>
 	  <label>Copies</label>
