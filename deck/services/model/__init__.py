@@ -18,7 +18,8 @@ class Deck(ndb.Model):
     deck = Deck()
 
     deck.name = deck_dict['name']
-    deck.description = deck_dict['description']
+    if 'description' in deck_dict :
+      deck.description = deck_dict['description']
     deck.cards = []
     log.debug(deck_dict['cards'])
     for multiverse_id, quantity in deck_dict['cards'].iteritems():

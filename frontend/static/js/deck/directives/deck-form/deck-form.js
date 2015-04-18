@@ -20,9 +20,12 @@
     
     function controller($scope, $q, cardservices) {
       var vm = this;
-      vm.searchText = "";
-      vm.selectedCard = false;
-      vm.copies = 1;
+      
+      vm.resetCard = function() {
+        vm.searchText = "";
+        vm.selectedCard = false;
+        vm.copies = 1;
+      }
 
       vm.searchCards = function(term) {
         var deferred = $q.defer();
@@ -49,7 +52,19 @@
           copies = $scope.deck.cards[id] + copies;
         }
         $scope.deck.cards[id] = Math.min(4, copies);
+        
+        vm.resetCard();
       };
+      
+      $scope.$on('wd.copiesChanged', function(event, args) {
+        if (args.copies <= 0) {          
+          delete $scope.deck.cards[args.id];
+        } else {
+          $scope.deck.cards[args.id] = args.copies;
+        }
+      });
+      
+      vm.resetCard();
     }
     
     function link(scope, element, attr, ngModel) {

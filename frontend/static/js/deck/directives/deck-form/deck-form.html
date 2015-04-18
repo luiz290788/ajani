@@ -23,10 +23,9 @@
 	  <input required type="number" step="1" name="copies" ng-model="vm.copies" min="1" max="4">
   </md-input-container>
   <md-button ng-click="vm.addCard()">add</md-button>
-  
   <md-list>
-    <md-list-item ng-repeat="card in deck.cards">
-      <wd-card-list id="card"></wd-card-list>
+    <md-list-item ng-repeat="(id, copies) in deck.cards">
+      <wd-card-list-item id="id" copies="copies"></wd-card-list-item>
     </md-list-item>
   </md-list>
 </md-content>

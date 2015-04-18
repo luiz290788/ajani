@@ -1,3 +1,6 @@
 dispatch:
-  - url: "*/card*"
+  - url: "*/api/card*"
     module: card
+    
+  - url: "*/api/deck*"
+    module: deck

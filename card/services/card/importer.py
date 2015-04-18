@@ -55,8 +55,8 @@ def _search_document(json_card):
   return card_document
 
 def _save_batch(index, cards, documents):
-  index.put(documents)
-  ndb.put_multi(cards)
+  index.put_async(documents)
+  ndb.put_multi_async(cards)
 
 def import_set(card_set):
   url = MTG_JSON_CARD_SET_URL % card_set
@@ -69,7 +69,7 @@ def import_set(card_set):
       json_card['set'] = card_set
       cards.append(MagicCard.from_dict(json_card))
       documents.append(_search_document(json_card))
-      if len(documents) >= 200:
+      if len(documents) >= 50:
         _save_batch(index, cards, documents)
         documents = []
         cards = []

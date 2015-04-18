@@ -1,3 +1,3 @@
 (function(angular) {
-  angular.module('wd.deck', []);
+  angular.module('wd.deck', ['wd.card']);
 })(angular);

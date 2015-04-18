@@ -13,8 +13,16 @@ var app = angular.module('web-duels', ['ngRoute',
     $locationProvider.html5Mode(true);
     
     $routeProvider.when('/deck/add', {
-      templateUrl: '/partials/adddeck.html',
+      templateUrl: '/partials/deck/add.html',
       controller: 'addDeckCtrl',
+      controllerAs: 'vm'
+    }).when('/deck/:id', {
+      templateUrl: '/partials/deck/view.html',
+      controller: 'viewDeckCtrl',
+      controllerAs: 'vm'
+    }).when('/deck/:id/edit', {
+      templateUrl: '/partials/deck/edit.html',
+      controller: 'editDeckCtrl',
       controllerAs: 'vm'
     }).otherwise({
       redirectTo: '/deck/add'

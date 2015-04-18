@@ -6,11 +6,16 @@
   
   function cardservices($http) {
     return {
-      search: search
+      search: search,
+      get: get
     };
     
     function search(term) {
-      return $http.get('/card', {params: {q: term}});
+      return $http.get('/api/card', {params: {q: term}});
+    }
+    
+    function get(id) {
+      return $http.get('/api/card/' + id);
     }
   }
 })(angular);

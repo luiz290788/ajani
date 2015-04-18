@@ -1,0 +1,9 @@
+<md-whiteframe class="md-whiteframe-z1" layout="column">
+	<md-toolbar>
+	  <h3>Edit {{vm.deck.name}}</h3>
+	</md-toolbar>
+	<wd-deck-form ng-model="vm.deck">
+	</wd-deck-form>
+	<md-button ng-click="vm.cancelEdit()">cancel</md-button>
+	<md-button ng-click="vm.updateDeck(vm.deck)">save</md-button>
+</md-whiteframe>

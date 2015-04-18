@@ -19,7 +19,7 @@ def import_set(card_set):
   importer.import_set(card_set)
   return 'importing set'
 
-@app.route('/card', methods=['GET'])
+@app.route('/api/card', methods=['GET'])
 def search_cards():
   result = {}
   if 'q' in request.args:
@@ -28,7 +28,7 @@ def search_cards():
     result['cards'] = search.do_search(term)
   return json.dumps(result)
 
-@app.route('/card/<int:multiverseid>', methods=['GET'])
+@app.route('/api/card/<int:multiverseid>', methods=['GET'])
 def get_card(multiverseid):
   magic_card = card.get_card(multiverseid)
   card_dict = magic_card.to_dict()
