@@ -1,6 +1,8 @@
 <md-whiteframe class="md-whiteframe-z1" layout="column">
   <md-toolbar layout-padding>
     <h3>{{::vm.deck.name}}</h3>
+    <span flex></span>
+    <md-button ng-click="vm.edit(vm.deck)">edit</md-button>
   </md-toolbar>
   <md-content layout-padding>
     <p ng-if="::vm.deck.description">{{::vm.deck.description}}</p>

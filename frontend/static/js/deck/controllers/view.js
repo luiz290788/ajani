@@ -2,9 +2,9 @@
   angular.module('wd.deck')
     .controller('viewDeckCtrl', viewDeckCtrl);
   
-  viewDeckCtrl.$inject = ['$scope', 'deckservices', '$routeParams', 'cardservices'];
+  viewDeckCtrl.$inject = ['$scope', 'deckservices', '$routeParams', 'cardservices', '$location'];
 
-  function viewDeckCtrl($scope, deckservices, $routeParams, cardservices) {
+  function viewDeckCtrl($scope, deckservices, $routeParams, cardservices, $location) {
     var vm = this;
 
     loadDeck($routeParams.id);
@@ -14,6 +14,10 @@
         sortCards(newValue);
       }
     });
+    
+    vm.edit = function(deck) {
+      $location.path('/deck/' + deck.id + '/edit');
+    };
     
     function loadDeck(id) {
       deckservices.load(id).then(function(response) {
