@@ -4,3 +4,6 @@ dispatch:
     
   - url: "*/api/deck*"
     module: deck
+
+  - url: "*/api/game*"
+    module: game
