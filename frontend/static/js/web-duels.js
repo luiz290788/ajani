@@ -2,7 +2,8 @@
   
 var app = angular.module('web-duels', ['ngRoute',
                                        'wd.card',
-                                       'wd.deck', 
+                                       'wd.deck',
+                                       'wd.game',
                                        'ngMaterial', 
                                        'ngAnimate', 
                                        'ngAria']);
@@ -27,6 +28,10 @@ var app = angular.module('web-duels', ['ngRoute',
     }).when('/deck', {
       templateUrl: '/partials/deck/list.html',
       controller: 'listDeckCtrl',
+      controllerAs: 'vm'
+    }).when('/game/new', {
+      templateUrl: '/partials/game/new.html',
+      controller: 'newGameCtrl',
       controllerAs: 'vm'
     }).otherwise({
       redirectTo: '/deck'

@@ -1,6 +1,6 @@
 (function(angular) {
   
-  angular.module('vm.game')
+  angular.module('wd.game')
     .factory('gameservices', gameservices);
   
   gameservices.$inject = ['$http'];
@@ -10,8 +10,8 @@
       create: create
     };
     
-    function create() {
-      return $http.post('/api/game');
+    function create(kind) {
+      return $http.put('/api/game/' + kind);
     }
   };
   

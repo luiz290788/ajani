@@ -29,7 +29,7 @@ def create_deck():
 @app.route('/api/deck', methods=['GET'])
 def list_decks():
   decks = deck.list_deck()
-  result ={'decks': decks}
+  result = {'decks': decks}
   return json.dumps(result)
 
 @app.route('/api/deck/<int:deck_id>', methods=['POST'])
