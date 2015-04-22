@@ -1,3 +1,3 @@
 (function(angular) {
-  angular.module('wd.game', []);
+  angular.module('wd.game', ['ngCookies']);
 })(angular);
