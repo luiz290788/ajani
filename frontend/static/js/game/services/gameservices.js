@@ -7,11 +7,16 @@
   
   function gameservices($http) {
     return {
-      create: create
+      create: create,
+      connect: connect
     };
     
     function create(kind) {
       return $http.put('/api/game/' + kind);
+    }
+    
+    function connect(id) {
+      return $http.post('/api/game/' + id);
     }
   };
   

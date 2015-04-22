@@ -33,6 +33,10 @@ var app = angular.module('web-duels', ['ngRoute',
       templateUrl: '/partials/game/new.html',
       controller: 'newGameCtrl',
       controllerAs: 'vm'
+    }).when('/game/:id', {
+      templateUrl: '/partials/game/battlefield.html',
+      controller: 'battleFieldCtrl',
+      controllerAs: 'vm'
     }).otherwise({
       redirectTo: '/deck'
     })
