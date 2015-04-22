@@ -3,9 +3,9 @@
   angular.module('wd.game')
     .controller('battleFieldCtrl', battleFieldCtrl);
   
-  battleFieldCtrl.$inject = ['$scope', '$routeParams', 'gameservices', '$cookies'];
+  battleFieldCtrl.$inject = ['$scope', '$routeParams', 'gameservices', '$cookies', '$mdDialog'];
   
-  function battleFieldCtrl($scope, $routeParams, gameservices, $cookies) {
+  function battleFieldCtrl($scope, $routeParams, gameservices, $cookies, $mdDialog) {
     var vm = this;
 
     vm.gameId = $routeParams.id;
@@ -23,7 +23,6 @@
       } else {
         gameservices.connect(gameId).then(function(response) {
           var token = response.data.token;
-          console.log(token);
           callback(token);
         });
       }
@@ -33,10 +32,24 @@
       vm.channel = new goog.appengine.Channel(token);
       vm.socket = vm.channel.open();
       
-      vm.socket.onMessage = function(message) {
+      vm.socket.onmessage = function(message) {
         console.log(message);
       };
-    };
+      
+      vm.socket.onopen = function() {
+        selectDeck();
+      };
+    }
+    
+    function selectDeck() {
+      $mdDialog.show({
+        controller: 'deckSelectorCtrl',
+        controllerAs: 'vm',
+        templateUrl: '/partials/deck/selector.html'
+      }).then(function(answer) {
+        
+      });
+    }
   };
   
 })(angular);

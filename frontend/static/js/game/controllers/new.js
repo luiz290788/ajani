@@ -12,7 +12,7 @@
     function showGameTypeSelector() {
       
       $mdDialog.show({
-        controller: selectorController,
+        controller: 'dialogCtrl',
         controllerAs: 'vm',
         templateUrl: '/partials/game/selector.html'
       }).then(function(answer) {
@@ -27,16 +27,6 @@
       }, function() {
         showGameTypeSelector();
       });
-      
-      selectorController.$inject = ['$scope', '$mdDialog'];
-      
-      function selectorController($scope, $mdDialog) {
-        var vm = this;
-        
-        vm.answer = function(answer) {
-          $mdDialog.hide(answer);
-        };
-      }
     }
   }
 })(angular);

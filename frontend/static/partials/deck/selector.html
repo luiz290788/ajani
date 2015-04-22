@@ -1,0 +1,11 @@
+<md-dialog aria-label="Select your deck">
+  <md-content class="sticky-container">
+    <md-subheader class="md-sticky-no-effect">Select the deck you want to use</md-subheader>
+    <form name="deckSelectorForm">
+	    <md-select placeholder="choose a deck" ng-model="vm.deck" name="deckSelect" required>
+	      <md-option value="{{deck.id}}" ng-repeat="deck in vm.decks track by deck.id">{{deck.name}}</md-option>
+	    </md-select>
+	    <md-button ng-click="vm.answer(vm.deck)" ng-disabled="deckSelectorForm.$invalid">select</md-button>
+    </form>  
+  </md-content>
+</md-dialog>
