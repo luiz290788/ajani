@@ -6,3 +6,4 @@ class Game(ndb.Model):
   token_player_1 = ndb.StringProperty()
   deck_player_0 = ndb.IntegerProperty()
   deck_player_1 = ndb.IntegerProperty()
+  created_at = ndb.DateTimeProperty()
