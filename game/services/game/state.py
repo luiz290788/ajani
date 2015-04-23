@@ -1,3 +1,9 @@
 
-CHOOSE_DECK = 'choose_deck'
-WAIT_OPPNENT = 'wait_opponent'
+# when the users are selecting the deck
+SELECT_DECK = 'select_deck'
+
+# when the users are shuffling the decks and throwing dices
+PRE_GAME = 'pre_game'
+
+# when the game has started
+IN_GAME = 'in_game'

@@ -1,7 +1,7 @@
-from services.model import Game
+from services.model import Game, Event
 from google.appengine.ext import ndb
 from datetime import datetime
-from services.game import state, event
+from services.game import state, event, playerstate
 
 def _generate_token(game_id, player_num):
   return '%d-player-%d' % (game_id, player_num)
@@ -36,7 +36,7 @@ def connect(urlsafe_id):
     player = 'player_1'
   else:
     #everybody is connected.
-    # TODO thing how to handle it
+    # TODO think how to handle it
     pass
   return (token, player)
 
@@ -45,28 +45,20 @@ def get_state(game_id, player_id):
   response = {}
   if player_id == game.player_0 :
     if game.deck_player_0 is None:
-      response['state'] = state.CHOOSE_DECK
+      response['state'] = playerstate.CHOOSE_DECK
     else:
-      response['state'] = state.WAIT_OPPNENT
+      response['state'] = playerstate.WAIT_OPPNENT
   elif player_id == game.player_1 :
     if game.deck_player_1 is None:
-      response['state'] = state.CHOOSE_DECK
+      response['state'] = playerstate.CHOOSE_DECK
     else:
-      response['state'] = state.WAIT_OPPNENT
+      response['state'] = playerstate.WAIT_OPPNENT
       
   return response
 
 @ndb.transactional()
-def process_event(game_id, player_id, incoming_event):
-  game = ndb.Key(urlsafe=game_id).get()
-  response = {'state': state.CHOOSE_DECK}
-  if incoming_event['event'] == event.SELECT_DECK:
-    deck = incoming_event['deck']
-    if player_id == game.player_0 :
-      game.deck_player_0 = deck
-    elif player_id == game.player_1 :
-      game.deck_player_1 = deck
-    game.put()
-    response['state'] = state.WAIT_OPPNENT
-    
+def process_event(game, player_id, incoming_event):
+  event.save(game, player_id, incoming_event)
+  processor = event.get_processor(incoming_event['event'])
+  response = processor(game, player_id, incoming_event)
   return response
