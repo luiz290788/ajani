@@ -12,18 +12,26 @@
     
     connect(vm.gameId);
     
+    $scope.$watch('vm.state', function(newState, oldState) {
+      switch (newState) {
+      case 'choose_deck':
+        selectDeck()
+        break;
+      }
+    });
+    
     function connect(gameId) {
-      var callback = function(token) {
-        $cookies[gameId] = token;
-        vm.token = token;
+      var callback = function(identification) {
+        $cookies[gameId] = angular.toJson(identification);
+        vm.token = identification.token;
+        vm.player = identification.player;
         openSocket(vm.token);
       }
       if ($cookies[gameId]) {
-        callback($cookies[gameId]);
+        callback(angular.fromJson($cookies[gameId]));
       } else {
         gameservices.connect(gameId).then(function(response) {
-          var token = response.data.token;
-          callback(token);
+          callback(response.data);
         });
       }
     }
@@ -33,12 +41,16 @@
       vm.socket = vm.channel.open();
       
       vm.socket.onmessage = function(message) {
-        console.log(message);
+        // TODO deal with messages
       };
       
       vm.socket.onopen = function() {
-        selectDeck();
+        getState();
       };
+    }
+    
+    function getState() {
+      gameservices.getState(vm.gameId, vm.player).then(setState);
     }
     
     function selectDeck() {
@@ -46,9 +58,13 @@
         controller: 'deckSelectorCtrl',
         controllerAs: 'vm',
         templateUrl: '/partials/deck/selector.html'
-      }).then(function(answer) {
-        
+      }).then(function(deck) {
+        gameservices.selectDeck(vm.gameId, vm.player, deck).then(setState);
       });
+    }
+    
+    function setState(response) {
+      vm.state = response.data.state;
     }
   };
   
