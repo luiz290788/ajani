@@ -1,7 +1,9 @@
 from services.model import Game, Event
 from google.appengine.ext import ndb
+from google.appengine.api import channel
 from datetime import datetime
-from services.game import state, event, playerstate
+from services.game import state, event
+import json
 
 def _generate_token(game_id, player_num):
   return '%d-player-%d' % (game_id, player_num)
@@ -11,7 +13,8 @@ def create(kind):
   game = Game(key=ndb.Key(Game, game_id), kind=kind,
         token_player_0=_generate_token(game_id, 0),
         token_player_1=_generate_token(game_id, 1),
-        created_at=datetime.now())
+        created_at=datetime.now(),
+        state = state.SELECT_DECK)
 
   game.put()
   
@@ -40,25 +43,20 @@ def connect(urlsafe_id):
     pass
   return (token, player)
 
-def get_state(game_id, player_id):
-  game = ndb.Key(urlsafe=game_id).get()
-  response = {}
-  if player_id == game.player_0 :
-    if game.deck_player_0 is None:
-      response['state'] = playerstate.CHOOSE_DECK
+def send_notifications(game, player_id, notification):
+  if notification is not None:
+    if game.player_0 == player_id:
+      token = game.token_player_1
     else:
-      response['state'] = playerstate.WAIT_OPPNENT
-  elif player_id == game.player_1 :
-    if game.deck_player_1 is None:
-      response['state'] = playerstate.CHOOSE_DECK
-    else:
-      response['state'] = playerstate.WAIT_OPPNENT
-      
-  return response
+      token = game.token_player_0
+    channel.send_message(token, json.dumps(notification))
 
 @ndb.transactional()
 def process_event(game, player_id, incoming_event):
   event.save(game, player_id, incoming_event)
+
   processor = event.get_processor(incoming_event['event'])
-  response = processor(game, player_id, incoming_event)
+  (response, notification) = processor(game, player_id, incoming_event)
+  send_notifications(game, player_id, notification)
+
   return response

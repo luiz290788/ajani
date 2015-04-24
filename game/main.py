@@ -1,7 +1,7 @@
 import logging, json
 from flask import Flask, request
 from services import game
-from services.game import dice
+from services.game import dice, state
 from google.appengine.api import channel
 from services.model import Game
 
@@ -23,9 +23,9 @@ def connect(game_id):
 
 @app.route('/api/game/<game_id>/<player_id>', methods=['GET'])
 def get_state(game_id, player_id):
-  state = game.get_state(game_id, player_id)
-  
-  return json.dumps(state)
+  game_obj = Game.from_urlsafe(game_id)
+  response = state.get(game_obj, player_id)
+  return json.dumps(response)
 
 @app.route('/api/game/<game_id>/<player_id>', methods=['PUT'])
 def event(game_id, player_id):

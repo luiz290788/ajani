@@ -14,10 +14,17 @@
     
     $scope.$watch('vm.state', function(newState, oldState) {
       switch (newState) {
-      case 'choose_deck':
-        selectDeck()
+      case 'select_deck':
+        selectDeck();
         break;
       }
+    });
+    
+    $scope.$on('socket.message', function(event, notification) {
+      if (notification.state) {
+        vm.state = notification.state;
+      }
+      $scope.$apply();
     });
     
     function connect(gameId) {
@@ -42,6 +49,8 @@
       
       vm.socket.onmessage = function(message) {
         // TODO deal with messages
+        notification = angular.fromJson(message.data);
+        $scope.$emit('socket.message', notification);
       };
       
       vm.socket.onopen = function() {
