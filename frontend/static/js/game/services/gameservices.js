@@ -10,8 +10,15 @@
       create: create,
       connect: connect,
       getState: getState,
-      selectDeck: selectDeck
+      selectDeck: selectDeck,
+      throwDice: throwDice
     };
+    
+    function throwDice(id, player) {
+      return $http.put('/api/game/' + id + '/' + player, {
+        'event': 'throw_dice'
+      });
+    }
     
     function selectDeck(id, player, deck) {
       return $http.put('/api/game/' + id + '/' + player, {

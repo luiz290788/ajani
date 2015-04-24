@@ -12,7 +12,10 @@ PRE_GAME = 'pre_game'
 IN_GAME = 'in_game'
 
 # users are throwing dices to decide who starts
-THROW_DICES = 'throw_dices'
+THROW_DICE = 'throw_dice'
+
+# players are deciding if keep your mulligan
+OPENING_HAND = 'opening_hand'
 
 def get(game, player_id):
   response = {}

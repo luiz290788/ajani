@@ -17,6 +17,9 @@
       case 'select_deck':
         selectDeck();
         break;
+      case 'throw_dice':
+        throwDice();
+        break;
       }
     });
     
@@ -48,9 +51,8 @@
       vm.socket = vm.channel.open();
       
       vm.socket.onmessage = function(message) {
-        // TODO deal with messages
         notification = angular.fromJson(message.data);
-        $scope.$emit('socket.message', notification);
+        $scope.$broadcast('socket.message', notification);
       };
       
       vm.socket.onopen = function() {
@@ -69,6 +71,18 @@
         templateUrl: '/partials/deck/selector.html'
       }).then(function(deck) {
         gameservices.selectDeck(vm.gameId, vm.player, deck).then(setState);
+      });
+    }
+    
+    function throwDice() {
+      var newScope = $scope.$new(true, $scope);
+      newScope.gameId = vm.gameId;
+      newScope.player = vm.player;
+      $mdDialog.show({
+        scope: newScope,
+        controller: 'diceCtrl',
+        controllerAs: 'vm',
+        templateUrl: '/partials/game/dice.html'
       });
     }
     

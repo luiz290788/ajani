@@ -1,4 +1,4 @@
-from services.game.state import THROW_DICES, WAIT_OPPONENT
+from services.game.state import THROW_DICE, WAIT_OPPONENT
 
 def _set_deck(game, player_id, incoming_event):
   deck = incoming_event['deck']
@@ -17,10 +17,10 @@ def select_deck_process(game, player_id, incoming_event):
   response = {}
   notification = None
   if _decks_selected(game):
-    game.state = THROW_DICES
+    game.state = THROW_DICE
     # TODO return current state to the user and notify the other user
-    response['state'] = THROW_DICES
-    notification = {'state': THROW_DICES}
+    response['state'] = THROW_DICE
+    notification = {'state': THROW_DICE}
   else:
     response['state'] = WAIT_OPPONENT
   game.put()
