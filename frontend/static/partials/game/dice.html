@@ -1,7 +1,15 @@
 <md-dialog aria-label="Throw the dice to see who starts.">
   <md-content class="sticky-container">
     <md-subheader class="md-sticky-no-effect">Throw the dice to see who starts.</md-subheader>
-    {{vm.my_value}} {{vm.opponent_value}}
-    <md-button ng-click="vm.throwDice()">Throw it!</md-button>
+    
+    <span ng-if="vm.my_value">You got {{vm.my_value}}!</span>
+    <span ng-if="vm.opponent_value">Your opponent got {{vm.opponent_value}}!</span>
+
+    <span ng-if="vm.go_first">You go first!</span>
+    <span ng-if="vm.opponent_go_first">Your opponent will start!</span>
+    <span ng-if="vm.throw_again">Ops... there was a tie. Throw again!</span>
+    
+    <md-button ng-click="vm.throwDice()" ng-if="!vm.my_value || vm.throw_again">Throw it!</md-button>
+    <md-button ng-if="vm.go_first || vm.opponent_go_first" ng-click="vm.close()">OK</md-button>
   </md-content>
 </md-dialog>

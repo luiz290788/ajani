@@ -20,6 +20,11 @@
       case 'throw_dice':
         throwDice();
         break;
+      case 'opening_hand':
+        if (!vm.diceDialog) {
+          openHand();
+        }
+        break;
       }
     });
     
@@ -81,16 +86,22 @@
       var newScope = $scope.$new(true, $scope);
       newScope.gameId = vm.gameId;
       newScope.player = vm.player;
-      $mdDialog.show({
+      vm.diceDialog = $mdDialog.show({
         scope: newScope,
         controller: 'diceCtrl',
         controllerAs: 'vm',
         templateUrl: '/partials/game/dice.html'
       });
+      
+      vm.diceDialog.then(openHand());
     }
     
     function setState(response) {
       vm.state = response.data.state;
+    }
+    
+    function openHand() {
+      console.log('get openning hand.');
     }
   };
   

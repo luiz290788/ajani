@@ -20,7 +20,11 @@ def throw_dice_process(game, player_id, incoming_event):
       game.dice_player_1 = value
 
     if game.dice_player_0 is not None and game.dice_player_1 is not None:
-      game.state = OPENING_HAND
+      if game.dice_player_0 != game.dice_player_1:
+        game.state = OPENING_HAND
+      else:
+        game.dice_player_0 = None
+        game.dice_player_1 = None
   elif player_0:
     value = game.dice_player_0
   else:

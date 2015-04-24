@@ -24,5 +24,12 @@ def get(game, player_id):
     if game.player_0 == player_id and game.deck_player_0 is not None \
         or game.player_1 == player_id and game.deck_player_1 is not None:
       response['state'] = WAIT_OPPONENT
-      
+  elif game.state == THROW_DICE:
+    response['state'] = game.state
+    if game.player_0 == player_id and game.deck_player_0 is not None \
+        or game.player_1 == player_id and game.deck_player_1 is not None:
+      response['state'] = WAIT_OPPONENT
+  elif game.state == OPENING_HAND:
+    response['state'] = game.state
+
   return response
