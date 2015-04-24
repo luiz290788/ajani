@@ -1,6 +1,7 @@
 <md-dialog aria-label="Throw the dice to see who starts.">
   <md-content class="sticky-container">
     <md-subheader class="md-sticky-no-effect">Throw the dice to see who starts.</md-subheader>
+    {{vm.my_value}} {{vm.opponent_value}}
     <md-button ng-click="vm.throwDice()">Throw it!</md-button>
   </md-content>
 </md-dialog>

@@ -29,6 +29,9 @@
       }
       $scope.$apply();
     });
+    $scope.$on('wd.change_state', function(event, state) {
+      vm.state = state;
+    });
     
     function connect(gameId) {
       var callback = function(identification) {
