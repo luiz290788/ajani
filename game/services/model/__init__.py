@@ -24,3 +24,5 @@ class Event(ndb.Model):
   player_id = ndb.StringProperty()
   date = ndb.DateTimeProperty(auto_now_add=True)
   
+class Hand(ndb.Model):
+  card = ndb.IntegerProperty(repeated=True)

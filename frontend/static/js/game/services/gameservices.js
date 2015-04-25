@@ -11,8 +11,13 @@
       connect: connect,
       getState: getState,
       selectDeck: selectDeck,
-      throwDice: throwDice
+      throwDice: throwDice,
+      openHand: openHand
     };
+    
+    function openHand(id, player) {
+      return $http.get('/api/game/' + id + '/' + player + '/hand');
+    }
     
     function throwDice(id, player) {
       return $http.put('/api/game/' + id + '/' + player, {

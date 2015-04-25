@@ -1,4 +1,4 @@
-from services.model import Game, Event
+from services.model import Game, Event, Hand
 from google.appengine.ext import ndb
 from google.appengine.api import channel
 from datetime import datetime
@@ -60,3 +60,7 @@ def process_event(game, player_id, incoming_event):
   send_notifications(game, player_id, notification)
 
   return response
+
+
+
+

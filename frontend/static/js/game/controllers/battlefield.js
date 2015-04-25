@@ -101,7 +101,7 @@
     }
     
     function openHand() {
-      console.log('get openning hand.');
+      gameservices.openHand();
     }
   };
   
