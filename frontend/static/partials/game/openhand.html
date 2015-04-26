@@ -1,0 +1,11 @@
+<md-dialog aria-label="Opening hand!">
+  <md-content class="sticky-container">
+    <md-subheader class="md-sticky-no-effect">Keep or muligan?</md-subheader>
+
+    <img ng-src="http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid={{card.multiverse_id}}&type=card"
+         ng-repeat="card in vm.cards">
+    
+    <md-button>Keep</md-button>
+    <md-button>Muligan</md-button>
+  </md-content>
+</md-dialog>

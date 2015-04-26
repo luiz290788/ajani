@@ -93,7 +93,7 @@
         templateUrl: '/partials/game/dice.html'
       });
       
-      vm.diceDialog.then(openHand());
+      vm.diceDialog.then(openHand);
     }
     
     function setState(response) {
@@ -101,8 +101,18 @@
     }
     
     function openHand() {
-      gameservices.openHand(vm.gameId, vm.player).then(function(response) {
-        console.log(response.data);
+      var newScope = $scope.$new(true, $scope);
+      newScope.gameId = vm.gameId;
+      newScope.player = vm.player;
+      vm.openHandDialog = $mdDialog.show({
+        scope: newScope,
+        controller: 'openHandCtrl',
+        controllerAs: 'vm',
+        templateUrl: '/partials/game/openhand.html'
+      });
+      
+      vm.openHandDialog.then(function(cards) {
+        vm.hand = {'cards': cards};
       });
     }
   };
