@@ -1,5 +1,5 @@
-import os
-from google.appengine.api import modules, urlfetch
+import os, requests
+from google.appengine.api import modules
 
 MODULE_HOST = modules.get_hostname(module='deck')
 
@@ -16,6 +16,7 @@ def init_base_url():
 BASE_URL = init_base_url()
 
 def get(deck_id):
-  url = BASE_URL + 'api/deck/' + deck_id
-  result = urlfetch.fetch(url=url)
+  url = BASE_URL + 'api/deck/' + str(deck_id)
+  result = requests.get(url)
+  return result.json()
   

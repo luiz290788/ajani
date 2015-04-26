@@ -23,6 +23,15 @@ class Event(ndb.Model):
   data = ndb.JsonProperty(compressed=True)
   player_id = ndb.StringProperty()
   date = ndb.DateTimeProperty(auto_now_add=True)
+
+class Card(ndb.Model):
+  multiverse_id = ndb.StringProperty(required=True)
+  instance_id = ndb.IntegerProperty(required=True)
+
+class CardHolder(ndb.Model):
+  cards = ndb.StructuredProperty(Card, repeated=True)
+
+class Hand(CardHolder): pass
+
+class Library(CardHolder): pass
   
-class Hand(ndb.Model):
-  card = ndb.IntegerProperty(repeated=True)

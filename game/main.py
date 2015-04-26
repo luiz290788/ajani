@@ -1,6 +1,6 @@
 import logging, json
 from flask import Flask, request
-from services import game
+from services import game, deckservices
 from services.game import dice, state, hand
 from google.appengine.api import channel
 from services.model import Game
@@ -34,10 +34,11 @@ def event(game_id, player_id):
   state = game.process_event(game_obj, player_id, event)
   return json.dumps(state)
 
-@app.route('/api/game/<game_id>/<player_id>', methods=['GET'])
-def hand(game_id, player_id):
-  hand = hand.get(game_id, player_id)
-  pass
+@app.route('/api/game/<game_id>/<player_id>/hand', methods=['GET'])
+def get_hand(game_id, player_id):
+  hand_obj = hand.get(game_id, player_id)
+  response = {'cards': [card.to_dict() for card in hand_obj.cards]}
+  return json.dumps(response)
   
 @app.route('/api/game/dice/<int:dice_size>', methods=['GET'])
 def throw_dice(dice_size):

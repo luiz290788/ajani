@@ -101,7 +101,9 @@
     }
     
     function openHand() {
-      gameservices.openHand();
+      gameservices.openHand(vm.gameId, vm.player).then(function(response) {
+        console.log(response.data);
+      });
     }
   };
   

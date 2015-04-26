@@ -1,5 +1,6 @@
 from google.appengine.ext import ndb
 from services.model import Hand
+from services.game import library
 
 def get(game_urlsafe, player_id):
   game_key = ndb.Key(urlsafe=game_urlsafe)
@@ -11,9 +12,6 @@ def get(game_urlsafe, player_id):
   return hand
 
 def generate(game, player_id):
-  if game.player_0 == player_id:
-    deck_id = game.deck_player_0
-  elif game.player_1 == player_id:
-    deck_id = game.deck_player_1
-  
-  deckservices.get(deck_id)
+  library_obj = library.get(game, player_id)
+  hand_obj = Hand(parent=game.key, id=player_id, cards=[])
+  return library.draw(library_obj, hand_obj, 7)
