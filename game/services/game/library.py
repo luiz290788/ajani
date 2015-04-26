@@ -21,7 +21,7 @@ def generate(game, player_id):
       library.cards.append(card)
       card_instance = card_instance + 1
 
-  random.shuffle(library.cards)
+  shuffle(library)
 
   library.put()
   return library
@@ -38,3 +38,6 @@ def draw(library, hand_obj, count=1):
   ndb.put_multi([hand_obj, library])
   
   return hand_obj
+
+def shuffle(library):
+  random.shuffle(library.cards)

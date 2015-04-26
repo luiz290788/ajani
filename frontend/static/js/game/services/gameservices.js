@@ -12,8 +12,15 @@
       getState: getState,
       selectDeck: selectDeck,
       throwDice: throwDice,
-      openHand: openHand
+      openHand: openHand,
+      muligan: muligan
     };
+    
+    function muligan(id, player) {
+      return $http.put('/api/game/' + id + '/' + player, {
+        'event': 'muligan'
+      });
+    }
     
     function openHand(id, player) {
       return $http.get('/api/game/' + id + '/' + player + '/hand');

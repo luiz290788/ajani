@@ -2,8 +2,9 @@ from google.appengine.ext import ndb
 from services.model import Hand
 from services.game import library
 
-def get(game_urlsafe, player_id):
-  game_key = ndb.Key(urlsafe=game_urlsafe)
+def get(game_key, player_id):
+  if type(game_key) is str or type(game_key) is unicode:
+    game_key = ndb.Key(urlsafe=game_key)    
   hand_key = ndb.Key(Hand, player_id, parent=game_key)
   hand = hand_key.get()
   if hand is None:

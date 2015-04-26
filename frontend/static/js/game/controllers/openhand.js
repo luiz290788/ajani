@@ -10,10 +10,16 @@
     
     getOpenHand();
     
+    vm.muligan = function() {
+      gameservices.muligan($scope.gameId, $scope.player).then(setCardsCallback)
+    };
+    
     function getOpenHand() {
-      gameservices.openHand($scope.gameId, $scope.player).then(function (response) {
-        vm.cards = response.data.cards; 
-      });
+      gameservices.openHand($scope.gameId, $scope.player).then(setCardsCallback);
+    }
+    
+    function setCardsCallback(response) {
+      vm.cards = response.data.cards;
     }
   }
 })(angular);

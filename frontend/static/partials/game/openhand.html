@@ -6,6 +6,6 @@
          ng-repeat="card in vm.cards">
     
     <md-button>Keep</md-button>
-    <md-button>Muligan</md-button>
+    <md-button ng-if="vm.cards.length > 4" ng-click="vm.muligan()">Muligan</md-button>
   </md-content>
 </md-dialog>

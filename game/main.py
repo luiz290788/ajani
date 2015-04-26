@@ -1,6 +1,6 @@
 import logging, json
 from flask import Flask, request
-from services import game, deckservices
+from services import game
 from services.game import dice, state, hand
 from google.appengine.api import channel
 from services.model import Game
