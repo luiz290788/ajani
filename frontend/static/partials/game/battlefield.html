@@ -1,1 +1,11 @@
 {{vm.state}}
+
+<div ng-if="vm.opponent.library">cards in opponent library: {{vm.opponent.library.cards}}</div>
+<div ng-if="vm.opponent.hand">cards in opponent hand: {{vm.opponent.hand.cards}}</div>
+
+<div ng-if="vm.library">cards in library: {{vm.library.cards}}</div>
+
+<div class="hand" ng-if="vm.hand">
+	<img ng-src="http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid={{card.multiverse_id}}&type=card"
+	     ng-repeat="card in vm.hand.cards">
+</div>

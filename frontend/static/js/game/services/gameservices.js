@@ -13,8 +13,15 @@
       selectDeck: selectDeck,
       throwDice: throwDice,
       openHand: openHand,
-      muligan: muligan
+      muligan: muligan,
+      keep: keep
     };
+    
+    function keep(id, player) {
+      return $http.put('/api/game/' + id + '/' + player, {
+        'event': 'keep'
+      });
+    }
     
     function muligan(id, player) {
       return $http.put('/api/game/' + id + '/' + player, {

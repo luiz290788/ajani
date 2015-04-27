@@ -7,7 +7,7 @@
   
   function battleFieldCtrl($scope, $routeParams, gameservices, $cookies, $mdDialog) {
     var vm = this;
-
+    vm.opponent = {};
     vm.gameId = $routeParams.id;
     
     connect(vm.gameId);
@@ -31,6 +31,12 @@
     $scope.$on('socket.message', function(event, notification) {
       if (notification.state) {
         vm.state = notification.state;
+      }
+      if (notification.opponent_hand) {
+        vm.opponent.hand = notification.opponent_hand;
+      }
+      if (notification.opponent_library) {
+        vm.opponent.library = notification.opponent_library;
       }
       $scope.$apply();
     });
@@ -97,7 +103,13 @@
     }
     
     function setState(response) {
-      vm.state = response.data.state;
+      var data = response.data
+
+      vm.state = data.state;
+      vm.opponent.library = data.opponent_library;
+      vm.opponent.hand = data.opponent_hand;
+      vm.library = data.library;
+      vm.hand = data.hand;
     }
     
     function openHand() {
@@ -111,8 +123,10 @@
         templateUrl: '/partials/game/openhand.html'
       });
       
-      vm.openHandDialog.then(function(cards) {
-        vm.hand = {'cards': cards};
+      vm.openHandDialog.then(function(openHand) {
+        vm.hand = openHand.hand;
+        vm.state = openHand.state;
+        vm.library = openHand.library;
       });
     }
   };

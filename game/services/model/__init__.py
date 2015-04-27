@@ -5,6 +5,8 @@ class Game(ndb.Model):
 
   player_0 = ndb.StringProperty()
   player_1 = ndb.StringProperty()
+  ready_player_0 = ndb.BooleanProperty(default=False)
+  ready_player_1 = ndb.BooleanProperty(default=False)
   token_player_0 = ndb.StringProperty()
   token_player_1 = ndb.StringProperty()
   deck_player_0 = ndb.IntegerProperty()

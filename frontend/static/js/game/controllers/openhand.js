@@ -14,6 +14,12 @@
       gameservices.muligan($scope.gameId, $scope.player).then(setCardsCallback)
     };
     
+    vm.keep = function() {
+      gameservices.keep($scope.gameId, $scope.player).then(function (response) {
+        $mdDialog.hide(response.data);
+      });
+    };
+    
     function getOpenHand() {
       gameservices.openHand($scope.gameId, $scope.player).then(setCardsCallback);
     }

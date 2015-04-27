@@ -5,7 +5,7 @@
     <img ng-src="http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid={{card.multiverse_id}}&type=card"
          ng-repeat="card in vm.cards">
     
-    <md-button>Keep</md-button>
+    <md-button ng-click="vm.keep()">Keep</md-button>
     <md-button ng-if="vm.cards.length > 4" ng-click="vm.muligan()">Muligan</md-button>
   </md-content>
 </md-dialog>
