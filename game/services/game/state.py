@@ -70,6 +70,15 @@ def _load_game_entities(game, player_id):
     
   return response
 
+
+def _set_life(game, player_id, response):
+  if game.player_0 == player_id:
+    response['life'] = game.life_player_0
+    response['opponent_life'] = game.life_player_1
+  elif game.player_1 == player_id:
+    response['life'] = game.life_player_1
+    response['opponent_life'] = game.life_player_0
+
 def get(game, player_id):
   response = {}
   if game.state == SELECT_DECK:
@@ -87,5 +96,6 @@ def get(game, player_id):
   elif game.state == IN_GAME:
     response = _load_game_entities(game, player_id)
     response['state'] = game.state
+    _set_life(game, player_id, response)
 
   return response

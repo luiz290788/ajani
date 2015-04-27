@@ -41,6 +41,9 @@
       if (notification.opponent_battlefield) {
         vm.opponent.battlefield = notification.opponent_battlefield;
       }
+      if (notification.opponent_life) {
+        vm.opponent.life = notification.opponent_life;
+      }
       $scope.$apply();
     });
     $scope.$on('wd.change_state', function(event, state) {
@@ -58,6 +61,12 @@
       gameservices.draw(vm.gameId, vm.player).then(function(response) {
         vm.library = response.data.library;
         vm.hand = response.data.hand;
+      });
+    };
+    
+    vm.changeLife = function(delta) {
+      gameservices.life(vm.gameId, vm.player, delta).then(function(response) {
+        vm.life = response.data.life
       });
     };
     
@@ -129,6 +138,8 @@
       vm.hand = data.hand;
       vm.battlefield = data.battlefield;
       vm.opponent.battlefield = data.opponent_battlefield;
+      vm.life = data.life;
+      vm.opponent.life = data.opponent_life;
     }
     
     function openHand() {

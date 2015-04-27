@@ -13,6 +13,8 @@ class Game(ndb.Model):
   deck_player_1 = ndb.IntegerProperty()
   dice_player_0 = ndb.IntegerProperty()
   dice_player_1 = ndb.IntegerProperty()
+  life_player_0 = ndb.IntegerProperty(default=20)
+  life_player_1 = ndb.IntegerProperty(default=20)
   
   created_at = ndb.DateTimeProperty()
   state = ndb.StringProperty()

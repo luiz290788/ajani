@@ -3,23 +3,29 @@
 <div ng-if="vm.opponent.library">cards in opponent library: {{vm.opponent.library.cards}}</div>
 <div ng-if="vm.opponent.hand">cards in opponent hand: {{vm.opponent.hand.cards}}</div>
 
+<div ng-if="vm.battlefield && vm.opponent.battlefield">
+<div>BattleField</div>
+<div>
+	<p>opponent</p>
+  <wd-game-card card="card" ng-repeat="card in vm.opponent.battlefield.cards"/>
+</div>
+<div>
+	<p>{{vm.life}} x {{vm.opponent.life}}</p>
+	<md-button ng-click="vm.changeLife('+1')">+</md-button>
+	<md-button ng-click="vm.changeLife('-1')">-</md-button>
+</div>
+<div>
+	<p>my</p>
+	<wd-game-card card="card" ng-repeat="card in vm.battlefield.cards"/>
+</div>
+</div>
+
 <div ng-if="vm.library">
   <p>cards in library: {{vm.library.cards}}</p>
   <md-button ng-click="vm.draw()">Draw</md-button>
 </div>
 
-<div ng-if="vm.battlefield && vm.opponent.battlefield">
-<div>BattleField</div>
-<p>opponent</p>
-<img ng-src="http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid={{card.multiverse_id}}&type=card"
-     ng-repeat="card in vm.opponent.battlefield.cards">
-<p>my</p>
-<img ng-src="http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid={{card.multiverse_id}}&type=card"
-     ng-repeat="card in vm.battlefield.cards">
-</div>
-
 <div class="hand" ng-if="vm.hand">
-	<img ng-click="vm.play(card.instance_id)"
-	     ng-src="http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid={{card.multiverse_id}}&type=card"
-	     ng-repeat="card in vm.hand.cards">
+  <wd-game-card ng-click="vm.play(card.instance_id)" card="card"
+    ng-repeat="card in vm.hand.cards"/>
 </div>

@@ -3,7 +3,7 @@ from abc import abstractmethod
 from google.appengine.ext import ndb
 
 from services.game.event import selectdeck, throwdice, muligan, keep, playcard, \
-  draw
+  draw, life
 from services.model import Event
 
 
@@ -13,6 +13,7 @@ MULIGAN = 'muligan'
 KEEP = 'keep'
 PLAY = 'play'
 DRAW = 'draw'
+LIFE = 'life'
 
 processors = {}
   
@@ -30,5 +31,6 @@ def _init_processors():
   processors[KEEP] = keep.keep_process
   processors[PLAY] = playcard.play_card_proces
   processors[DRAW] = draw.draw_process
+  processors[LIFE] = life.lifecounter_process
     
 _init_processors()

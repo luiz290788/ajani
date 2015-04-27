@@ -16,8 +16,16 @@
       muligan: muligan,
       keep: keep,
       play: play,
-      draw: draw
+      draw: draw,
+      life: life
     };
+    
+    function life(id, player, delta) {
+      return $http.put('/api/game/' + id + '/' + player, {
+        'event': 'life',
+        'delta': delta
+      });
+    }
     
     function draw(id, player, count) {
       if (count === undefined) {
