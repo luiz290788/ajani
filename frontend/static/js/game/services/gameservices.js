@@ -15,8 +15,19 @@
       openHand: openHand,
       muligan: muligan,
       keep: keep,
-      play: play
+      play: play,
+      draw: draw
     };
+    
+    function draw(id, player, count) {
+      if (count === undefined) {
+        count = 1
+      }
+      return $http.put('/api/game/' + id + '/' + player, {
+        'event': 'draw',
+        'count': count
+      });
+    }
     
     function play(id, player, card) {
       return $http.put('/api/game/' + id + '/' + player, {

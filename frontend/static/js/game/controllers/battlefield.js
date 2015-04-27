@@ -54,6 +54,13 @@
       });
     };
     
+    vm.draw = function() {
+      gameservices.draw(vm.gameId, vm.player).then(function(response) {
+        vm.library = response.data.library;
+        vm.hand = response.data.hand;
+      });
+    };
+    
     function connect(gameId) {
       var callback = function(identification) {
         $cookies[gameId] = angular.toJson(identification);

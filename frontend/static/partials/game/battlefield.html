@@ -3,7 +3,10 @@
 <div ng-if="vm.opponent.library">cards in opponent library: {{vm.opponent.library.cards}}</div>
 <div ng-if="vm.opponent.hand">cards in opponent hand: {{vm.opponent.hand.cards}}</div>
 
-<div ng-if="vm.library">cards in library: {{vm.library.cards}}</div>
+<div ng-if="vm.library">
+  <p>cards in library: {{vm.library.cards}}</p>
+  <md-button ng-click="vm.draw()">Draw</md-button>
+</div>
 
 <div ng-if="vm.battlefield && vm.opponent.battlefield">
 <div>BattleField</div>
