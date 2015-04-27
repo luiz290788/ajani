@@ -1,5 +1,7 @@
 from google.appengine.ext import ndb
-from services.model import Hand, Library
+
+from services.model import Hand, Library, BattleField, Graveyard, Exile
+
 
 # waiting for the opponent
 WAIT_OPPONENT = 'wait_opponent'
@@ -19,12 +21,19 @@ THROW_DICE = 'throw_dice'
 # players are deciding if keep your mulligan
 OPENING_HAND = 'opening_hand'
 
+def _get_key(game, entity):
+  keys = []
+  keys.append(ndb.Key(entity, game.player_0, parent=game.key))
+  keys.append(ndb.Key(entity, game.player_1, parent=game.key))
+  return keys
+
 def _load_game_entities(game, player_id):
   keys = []
-  keys.append(ndb.Key(Hand, game.player_0, parent=game.key))
-  keys.append(ndb.Key(Hand, game.player_1, parent=game.key))
-  keys.append(ndb.Key(Library, game.player_0, parent=game.key))
-  keys.append(ndb.Key(Library, game.player_1, parent=game.key))
+  keys.extend(_get_key(game, Hand))
+  keys.extend(_get_key(game, Library))
+  keys.extend(_get_key(game, BattleField))
+  keys.extend(_get_key(game, Graveyard))
+  keys.extend(_get_key(game, Exile))
   
   response = {}
   objs = ndb.get_multi(keys)
@@ -40,6 +49,25 @@ def _load_game_entities(game, player_id):
         response['library'] = library_response
       else:
         response['opponent_library'] = library_response
+    elif type(obj) is BattleField:
+      battlefield_response = {'cards': [card.to_dict() for card in obj.cards]}
+      if obj.key.id() == player_id:
+        response['battlefield'] = battlefield_response
+      else:
+        response['opponent_battlefield'] = battlefield_response
+    elif type(obj) is Graveyard:
+      graveyard_response = {'cards': [card.to_dict() for card in obj.cards]}
+      if obj.key.id() == player_id:
+        response['graveyard'] = graveyard_response
+      else:
+        response['opponent_graveyard'] = graveyard_response
+    elif type(obj) is Exile:
+      exile_response = {'cards': [card.to_dict() for card in obj.cards]}
+      if obj.key.id() == player_id:
+        response['exile'] = exile_response
+      else:
+        response['opponent_exile'] = exile_response
+    
   return response
 
 def get(game, player_id):

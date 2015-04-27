@@ -5,7 +5,18 @@
 
 <div ng-if="vm.library">cards in library: {{vm.library.cards}}</div>
 
+<div ng-if="vm.battlefield && vm.opponent.battlefield">
+<div>BattleField</div>
+<p>opponent</p>
+<img ng-src="http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid={{card.multiverse_id}}&type=card"
+     ng-repeat="card in vm.opponent.battlefield.cards">
+<p>my</p>
+<img ng-src="http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid={{card.multiverse_id}}&type=card"
+     ng-repeat="card in vm.battlefield.cards">
+</div>
+
 <div class="hand" ng-if="vm.hand">
-	<img ng-src="http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid={{card.multiverse_id}}&type=card"
+	<img ng-click="vm.play(card.instance_id)"
+	     ng-src="http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid={{card.multiverse_id}}&type=card"
 	     ng-repeat="card in vm.hand.cards">
 </div>

@@ -14,8 +14,16 @@
       throwDice: throwDice,
       openHand: openHand,
       muligan: muligan,
-      keep: keep
+      keep: keep,
+      play: play
     };
+    
+    function play(id, player, card) {
+      return $http.put('/api/game/' + id + '/' + player, {
+        'event': 'play',
+        'card': card
+      });
+    }
     
     function keep(id, player) {
       return $http.put('/api/game/' + id + '/' + player, {

@@ -38,11 +38,21 @@
       if (notification.opponent_library) {
         vm.opponent.library = notification.opponent_library;
       }
+      if (notification.opponent_battlefield) {
+        vm.opponent.battlefield = notification.opponent_battlefield;
+      }
       $scope.$apply();
     });
     $scope.$on('wd.change_state', function(event, state) {
       vm.state = state;
     });
+    
+    vm.play = function(card) {
+      gameservices.play(vm.gameId, vm.player, card).then(function(response) {
+        vm.hand = response.data.hand;
+        vm.battlefield = response.data.battlefield;
+      });
+    };
     
     function connect(gameId) {
       var callback = function(identification) {
@@ -110,6 +120,8 @@
       vm.opponent.hand = data.opponent_hand;
       vm.library = data.library;
       vm.hand = data.hand;
+      vm.battlefield = data.battlefield;
+      vm.opponent.battlefield = data.opponent_battlefield;
     }
     
     function openHand() {

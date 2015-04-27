@@ -32,8 +32,21 @@ class Card(ndb.Model):
 
 class CardHolder(ndb.Model):
   cards = ndb.StructuredProperty(Card, repeated=True)
+  
+  def get_card(self, instance_id):
+    for card in self.cards:
+      if card.instance_id == instance_id:
+        return card
+  
+    return None
 
 class Hand(CardHolder): pass
 
 class Library(CardHolder): pass
+
+class BattleField(CardHolder): pass
+
+class Exile(CardHolder): pass
+
+class Graveyard(CardHolder): pass
   
