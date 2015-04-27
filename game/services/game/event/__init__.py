@@ -2,7 +2,8 @@ from abc import abstractmethod
 
 from google.appengine.ext import ndb
 
-from services.game.event import selectdeck, throwdice, muligan, keep, draw, life, move
+from services.game.event import selectdeck, throwdice, muligan, keep, draw, life, move, \
+  tap
 from services.model import Event
 
 
@@ -13,6 +14,9 @@ KEEP = 'keep'
 DRAW = 'draw'
 LIFE = 'life'
 MOVE = 'move'
+TAP = 'tap'
+UNTAP = 'untap'
+UNTAP_ALL = 'untap_all'
 
 processors = {}
   
@@ -31,5 +35,8 @@ def _init_processors():
   processors[DRAW] = draw.draw_process
   processors[LIFE] = life.lifecounter_process
   processors[MOVE] = move.move_process
+  processors[TAP] = tap.tap_process
+  processors[UNTAP] = tap.untap_process
+  processors[UNTAP_ALL] = tap.untap_all_process
     
 _init_processors()

@@ -15,11 +15,33 @@
       openHand: openHand,
       muligan: muligan,
       keep: keep,
-      play: play,
       draw: draw,
       life: life,
-      move: move
+      move: move,
+      tap: tap,
+      untap: untap,
+      untapAll: untapAll
     };
+    
+    function untapAll(id, player) {
+      return $http.put('/api/game/' + id + '/' + player, {
+        'event': 'untap_all'
+      });
+    }
+    
+    function tap(id, player, card) {
+      return $http.put('/api/game/' + id + '/' + player, {
+        'event': 'tap',
+        'card': card
+      });
+    }
+    
+    function untap(id, player, card) {
+      return $http.put('/api/game/' + id + '/' + player, {
+        'event': 'untap',
+        'card': card
+      });
+    }
     
     function move(id, player, card, from, to) {
       return $http.put('/api/game/' + id + '/' + player, {

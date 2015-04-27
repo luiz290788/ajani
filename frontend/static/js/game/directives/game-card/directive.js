@@ -25,6 +25,19 @@
       vm.placement = $scope.placement;
       vm.readOnly = $scope.readOnly
       
+      $scope.$watch('vm.card.tapped', function(tapped) {
+        if (tapped) {
+          var rotate = 'rotate(90deg)';
+          vm.style = {
+            '-ms-transform': rotate,
+            '-webkit-transform': rotate,
+            'transform': rotate
+          };
+        } else {
+          vm.style = {};
+        }
+      });
+      
       vm.showActions = function($event) {
         var actions = getActions(vm.placement);
         if (actions && actions.length) {
@@ -49,30 +62,34 @@
           });
         }
       };
-    }
-    
-    function action(key, label) {
-      return {
-        'key': key,
-        'label': label
-      };
-    }
-    
-    function getActions(placement) {
-      var actions = [];
-      switch (placement) {
-      case 'hand':
-        actions.push(action('move(hand,battlefield)', 'Play'));
-        actions.push(action('move(hand,graveyard)', 'Discard'));
-        actions.push(action('move(hand,exile)', 'Exile'));
-        break;
-      case 'battlefield':
-        actions.push(action('tap', 'Tap'));
-        actions.push(action('move(battlefield,graveyard)', 'Put in graveyard'));
-        actions.push(action('move(battlefield,exile)', 'Exile'));
-        break;
+      
+      function action(key, label) {
+        return {
+          'key': key,
+          'label': label
+        };
       }
-      return actions;
+      
+      function getActions(placement) {
+        var actions = [];
+        switch (placement) {
+        case 'hand':
+          actions.push(action('move(hand,battlefield)', 'Play'));
+          actions.push(action('move(hand,graveyard)', 'Discard'));
+          actions.push(action('move(hand,exile)', 'Exile'));
+          break;
+        case 'battlefield':
+          if (vm.card.tapped) {
+            actions.push(action('untap', 'Untap'))
+          } else {
+            actions.push(action('tap', 'Tap'));
+          }
+          actions.push(action('move(battlefield,graveyard)', 'Put in graveyard'));
+          actions.push(action('move(battlefield,exile)', 'Exile'));
+          break;
+        }
+        return actions;
+      }
     }
     
     function link(scope, element, attr) {

@@ -31,6 +31,7 @@ class Event(ndb.Model):
 class Card(ndb.Model):
   multiverse_id = ndb.StringProperty(required=True)
   instance_id = ndb.IntegerProperty(required=True)
+  tapped = ndb.BooleanProperty(default=False)
 
 class CardHolder(ndb.Model):
   cards = ndb.StructuredProperty(Card, repeated=True)

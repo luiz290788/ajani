@@ -34,12 +34,12 @@ def move_process(game, player_id, incoming_event):
   from_response = {'cards': [card.to_dict() for card in ca_from.cards]}
   to_response = {'cards': [card.to_dict() for card in ca_to.cards]}
   
-  if from_entity == Hand:
+  if from_entity == 'hand':
     from_notification = {'cards': len(ca_from.cards)}
   else:
     from_notification = from_response
   
-  if to_entity == Hand:
+  if to_entity == 'hand':
     to_notification = {'cards': len(ca_to.cards)}
   else:
     to_notification = to_response

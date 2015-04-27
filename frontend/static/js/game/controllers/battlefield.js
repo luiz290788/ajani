@@ -70,6 +70,25 @@
         }
       });
     });
+    
+    $scope.$on('wd.tap', function(event, card) {
+      gameservices.tap(vm.gameId, vm.player, card.instance_id).then(tapCallback);
+    });
+    
+    $scope.$on('wd.untap', function(event, card) {
+      gameservices.untap(vm.gameId, vm.player, card.instance_id).then(tapCallback);
+    });
+    
+    vm.untapAll = function() {
+      gameservices.untapAll(vm.gameId, vm.player).then(tapCallback)
+    };
+    
+    function tapCallback(response) {
+      var data = response.data;
+      if (data.battlefield) {
+        vm.battlefield = data.battlefield;
+      }
+    }
 
     vm.draw = function() {
       gameservices.draw(vm.gameId, vm.player).then(function(response) {
@@ -83,6 +102,7 @@
         vm.life = response.data.life
       });
     };
+    
     
     function connect(gameId) {
       var callback = function(identification) {
