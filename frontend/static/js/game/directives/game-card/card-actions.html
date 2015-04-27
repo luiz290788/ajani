@@ -1,0 +1,12 @@
+<md-dialog class="md-list">
+  <md-content class="sticky-container">
+	  <md-subheader>Action</md-subheader>
+	  <md-list>
+	    <md-list-item ng-repeat="action in vm.actions">
+	      <md-button class="md-list-item-content" ng-click="vm.action(action.key)">
+	        <span>{{action.label}}</span>
+	      </md-button>
+	    </md-list-item>
+	  </md-list>
+	</md-content>
+</md-dialog>

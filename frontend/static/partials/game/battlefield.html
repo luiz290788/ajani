@@ -16,7 +16,7 @@
 </div>
 <div>
 	<p>my</p>
-	<wd-game-card card="card" ng-repeat="card in vm.battlefield.cards"/>
+	<wd-game-card placement="battlefield" card="card" ng-repeat="card in vm.battlefield.cards"/>
 </div>
 </div>
 
@@ -26,6 +26,5 @@
 </div>
 
 <div class="hand" ng-if="vm.hand">
-  <wd-game-card ng-click="vm.play(card.instance_id)" card="card"
-    ng-repeat="card in vm.hand.cards"/>
+  <wd-game-card placement="hand" card="card" ng-repeat="card in vm.hand.cards"/>
 </div>

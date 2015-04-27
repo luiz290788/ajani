@@ -17,8 +17,18 @@
       keep: keep,
       play: play,
       draw: draw,
-      life: life
+      life: life,
+      move: move
     };
+    
+    function move(id, player, card, from, to) {
+      return $http.put('/api/game/' + id + '/' + player, {
+        'event': 'move',
+        'card': card,
+        'from': from,
+        'to': to
+      });
+    }
     
     function life(id, player, delta) {
       return $http.put('/api/game/' + id + '/' + player, {

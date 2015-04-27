@@ -46,17 +46,31 @@
       }
       $scope.$apply();
     });
+
     $scope.$on('wd.change_state', function(event, state) {
       vm.state = state;
     });
-    
-    vm.play = function(card) {
-      gameservices.play(vm.gameId, vm.player, card).then(function(response) {
-        vm.hand = response.data.hand;
-        vm.battlefield = response.data.battlefield;
+
+    $scope.$on('wd.move', function(event, card, args) {
+      var from = args[0];
+      var to = args[1];
+      gameservices.move(vm.gameId, vm.player, card.instance_id, from, to).then(function (response) {
+        var data = response.data;
+        if (data.hand) {
+          vm.hand = data.hand;
+        }
+        if (data.battlefield) {
+          vm.battlefield = data.battlefield;
+        }
+        if (data.graveyard) {
+          vm.graveyard = data.graveyard;
+        }
+        if (data.exile) {
+          vm.exile = data.exile;
+        }
       });
-    };
-    
+    });
+
     vm.draw = function() {
       gameservices.draw(vm.gameId, vm.player).then(function(response) {
         vm.library = response.data.library;
