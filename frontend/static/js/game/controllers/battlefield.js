@@ -122,6 +122,18 @@
       });
     };
     
+    vm.scry = function() {
+      vm.scryDialog = $mdDialog.show({
+        scope: $scope.$new(true, $scope),
+        locals: {
+          gameId: vm.gameId,
+          player: vm.player
+        },
+        controller: 'scryCtrl',
+        controllerAs: 'vm',
+        templateUrl: '/partials/game/scry.html'
+      });
+    };
     
     function connect(gameId) {
       var callback = function(identification) {

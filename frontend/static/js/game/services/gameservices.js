@@ -22,8 +22,14 @@
       untap: untap,
       untapAll: untapAll,
       searchLibrary: searchLibrary,
-      shuffle: shuffle
+      shuffle: shuffle,
+      scry: scry
     };
+    
+    function scry(id, player, options) {
+      var event = angular.extend({'event': 'scry'}, options);
+      return $http.put('/api/game/' + id + '/' + player, event);
+    }
     
     function shuffle(id, player) {
       return $http.put('/api/game/' + id + '/' + player, {

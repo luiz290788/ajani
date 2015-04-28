@@ -1,0 +1,26 @@
+<md-dialog>
+  <md-content class="sticky-container">
+    <md-subheader class="md-sticky-no-effect">Scry</md-subheader>
+
+    <div ng-if="!vm.cards">
+      <md-input-container>
+        <label>How many cards?</label>
+        <input required type="number" step="1" name="copies" ng-model="vm.count" min="1">
+      </md-input-container>
+      <md-button ng-click="vm.getCards(vm.count)">scry</md-button>
+    </div>
+    <div ng-if="vm.cards">
+      <ul dnd-list="vm.cards">
+        <li ng-repeat="card in vm.cards" 
+            dnd-moved="vm.cards.splice($index, 1)"
+            dnd-draggable="card" 
+            dnd-effect-allowed="move"
+            dnd-selected="vm.selected = card">
+          <span ng-if="card.library">Library</span>
+          <wd-card-name ng-if="!card.library" multiverse-id="card.multiverse_id"/>
+        </li>
+      </ul>
+      <md-button ng-click="vm.save(vm.cards)">done</md-button>
+    </div>
+  </md-content>
+</md-dialog>
