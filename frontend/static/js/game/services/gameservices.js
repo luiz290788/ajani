@@ -63,12 +63,13 @@
       });
     }
     
-    function move(id, player, card, from, to) {
+    function move(id, player, card, from, to, options) {
       return $http.put('/api/game/' + id + '/' + player, {
         'event': 'move',
         'card': card,
         'from': from,
-        'to': to
+        'to': to,
+        'options': options
       });
     }
     

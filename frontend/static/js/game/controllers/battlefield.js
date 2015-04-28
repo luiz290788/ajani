@@ -54,13 +54,19 @@
     $scope.$on('wd.move', function(event, card, args) {
       var from = args[0];
       var to = args[1];
+      var options = args[2];
+      if (options) {
+        options = angular.fromJson(options);
+      } else {
+        options = {}
+      }
       if (!Array.isArray(card)) {
         card = [card];
       }
       var card_ids = card.map(function(card) {
         return card.instance_id;
       });
-      gameservices.move(vm.gameId, vm.player, card_ids, from, to).then(function (response) {
+      gameservices.move(vm.gameId, vm.player, card_ids, from, to, options).then(function (response) {
         var data = response.data;
         if (data.hand) {
           vm.hand = data.hand;

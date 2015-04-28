@@ -34,6 +34,7 @@ def _entity_response(entity, hide_cards):
 def move_process(game, player_id, incoming_event):
   from_entity = incoming_event['from']
   to_entity = incoming_event['to']
+  options = incoming_event['options']
   (ca_from, ca_to) = _get_card_holders(game, player_id, from_entity, to_entity)
   
   if type(incoming_event['card']) in [int, long]:
@@ -41,10 +42,11 @@ def move_process(game, player_id, incoming_event):
   elif type(incoming_event['card']) is list:
     cards = incoming_event['card']
   for card_id in cards:
-    print card_id
     card = ca_from.get_card(card_id)
     ca_from.cards.remove(card)
     ca_to.cards.append(card)
+    if type(ca_to) is BattleField and options.get('tapped', False):
+      card.tapped = True
 
   if type(ca_from) is Library:
     random.shuffle(ca_from.cards)
