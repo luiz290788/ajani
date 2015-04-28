@@ -3,7 +3,7 @@ from abc import abstractmethod
 from google.appengine.ext import ndb
 
 from services.game.event import selectdeck, throwdice, muligan, keep, draw, life, move, \
-  tap, searchlibrary, shuffle, scry
+  tap, searchlibrary, shuffle, scry, reveal
 from services.model import Event
 
 
@@ -20,6 +20,7 @@ UNTAP_ALL = 'untap_all'
 SEARCH_LIBRARY = 'search_library'
 SHUFFLE = 'shuffle'
 SCRY = 'scry'
+REVEAL_HAND = 'reveal_hand'
 
 processors = {}
   
@@ -44,5 +45,6 @@ def _init_processors():
   processors[SEARCH_LIBRARY] = searchlibrary.search_library_process
   processors[SHUFFLE] = shuffle.shuffle_process
   processors[SCRY]  = scry.scry_process
+  processors[REVEAL_HAND] = reveal.reveal_hand_process
     
 _init_processors()

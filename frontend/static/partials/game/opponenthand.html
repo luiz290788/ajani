@@ -1,0 +1,10 @@
+<md-dialog>
+  <md-content class="sticky-container">
+    <md-subheader class="md-sticky-no-effect">Opponent hand</md-subheader>
+
+    <img ng-src="http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid={{card.multiverse_id}}&type=card"
+         ng-repeat="card in vm.opponentHand.cards">
+    
+    <md-button ng-click="vm.close()">Close</md-button>
+  </md-content>
+</md-dialog>

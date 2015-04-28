@@ -23,8 +23,15 @@
       untapAll: untapAll,
       searchLibrary: searchLibrary,
       shuffle: shuffle,
-      scry: scry
+      scry: scry,
+      revealHand
     };
+    
+    function revealHand(id, player) {
+      return $http.put('/api/game/' + id + '/' + player, {
+        'event': 'reveal_hand'
+      });
+    }
     
     function scry(id, player, options) {
       var event = angular.extend({'event': 'scry'}, options);

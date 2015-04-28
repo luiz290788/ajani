@@ -3,9 +3,9 @@
   angular.module('wd.game')
     .controller('battleFieldCtrl', battleFieldCtrl);
   
-  battleFieldCtrl.$inject = ['$scope', '$routeParams', 'gameservices', '$cookies', '$mdDialog'];
+  battleFieldCtrl.$inject = ['$scope', '$routeParams', 'gameservices', '$cookies', '$mdDialog', '$mdToast'];
   
-  function battleFieldCtrl($scope, $routeParams, gameservices, $cookies, $mdDialog) {
+  function battleFieldCtrl($scope, $routeParams, gameservices, $cookies, $mdDialog, $mdToast) {
     var vm = this;
     vm.opponent = {};
     vm.gameId = $routeParams.id;
@@ -43,6 +43,9 @@
       }
       if (notification.opponent_life) {
         vm.opponent.life = notification.opponent_life;
+      }
+      if (notification.opponent_revealed_hand) {
+        opponentHand(notification.opponent_revealed_hand);
       }
       $scope.$apply();
     });
@@ -94,6 +97,16 @@
     vm.untapAll = function() {
       gameservices.untapAll(vm.gameId, vm.player).then(tapCallback)
     };
+    
+    vm.revealHand = function() {
+      gameservices.revealHand(vm.gameId, vm.player).then(function(response) {
+        $mdToast.show(
+          $mdToast.simple()
+            .content('Hand revealed.')
+            .hideDelay(3000)
+        );
+      });
+    }
     
     vm.searchLibrary = function() {
       vm.searchLibraryDialog = $mdDialog.show({
@@ -228,6 +241,18 @@
         vm.hand = openHand.hand;
         vm.state = openHand.state;
         vm.library = openHand.library;
+      });
+    }
+    
+    function opponentHand(hand) {
+      vm.opponentHandDialog = $mdDialog.show({
+        scope: $scope.$new(true, $scope),
+        controller: 'opponentHandCtrl',
+        controllerAs: 'vm',
+        templateUrl: '/partials/game/opponentHand.html',
+        locals: {
+          'hand': hand
+        }
       });
     }
   };
