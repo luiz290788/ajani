@@ -54,7 +54,13 @@
     $scope.$on('wd.move', function(event, card, args) {
       var from = args[0];
       var to = args[1];
-      gameservices.move(vm.gameId, vm.player, card.instance_id, from, to).then(function (response) {
+      if (!Array.isArray(card)) {
+        card = [card];
+      }
+      var card_ids = card.map(function(card) {
+        return card.instance_id;
+      });
+      gameservices.move(vm.gameId, vm.player, card_ids, from, to).then(function (response) {
         var data = response.data;
         if (data.hand) {
           vm.hand = data.hand;
@@ -81,6 +87,19 @@
     
     vm.untapAll = function() {
       gameservices.untapAll(vm.gameId, vm.player).then(tapCallback)
+    };
+    
+    vm.searchLibrary = function() {
+      vm.searchLibraryDialog = $mdDialog.show({
+        scope: $scope.$new(true, $scope),
+        locals: {
+          gameId: vm.gameId,
+          player: vm.player
+        },
+        controller: 'searchLibraryCtrl',
+        controllerAs: 'vm',
+        templateUrl: '/partials/game/searchlibrary.html'
+      });
     };
     
     function tapCallback(response) {

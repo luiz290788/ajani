@@ -1,0 +1,20 @@
+<md-dialog aria-label="Search library">
+  <md-content class="sticky-container">
+    <md-subheader class="md-sticky-no-effect">Search library</md-subheader>
+
+    <div>
+      <p>Library cards</p>
+      <wd-game-card ng-click="vm.selectCard(card)" card="card" ng-repeat="card in vm.library.cards"></wd-game-card>
+    </div>
+    <div ng-if="vm.selectedCards.length">
+      <p>selected cards</p>
+      <wd-game-card ng-click="vm.disselectCard(card)" card="card" ng-repeat="card in vm.selectedCards"></wd-game-card>
+      <md-button ng-click="vm.move('battlefield')">battlefield</md-button>
+      <md-button ng-click="vm.move('hand')">hand</md-button>
+      <md-button ng-click="vm.move('graveyard')">graveyard</md-button>
+      <md-button ng-click="vm.move('exile')">exile</md-button>
+    </div>
+    
+    <md-button ng-click="vm.close()">Close</md-button>
+  </md-content>
+</md-dialog>

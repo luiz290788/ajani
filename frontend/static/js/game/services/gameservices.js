@@ -20,8 +20,22 @@
       move: move,
       tap: tap,
       untap: untap,
-      untapAll: untapAll
+      untapAll: untapAll,
+      searchLibrary: searchLibrary,
+      shuffle: shuffle
     };
+    
+    function shuffle(id, player) {
+      return $http.put('/api/game/' + id + '/' + player, {
+        'event': 'shuffle'
+      });
+    }
+    
+    function searchLibrary(id, player) {
+      return $http.put('/api/game/' + id + '/' + player, {
+        'event': 'search_library'
+      });
+    }
     
     function untapAll(id, player) {
       return $http.put('/api/game/' + id + '/' + player, {
