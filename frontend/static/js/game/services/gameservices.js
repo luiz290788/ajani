@@ -24,8 +24,19 @@
       searchLibrary: searchLibrary,
       shuffle: shuffle,
       scry: scry,
-      revealHand
+      revealHand: revealHand,
+      revealTop: revealTop
     };
+    
+    function revealTop(id, player, revealed) {
+      if (revealed === undefined) {
+        revealed = true;
+      }
+      return $http.put('/api/game/' + id + '/' + player, {
+        'event': 'reveal_top',
+        'top_revealed': revealed
+      });
+    }
     
     function revealHand(id, player) {
       return $http.put('/api/game/' + id + '/' + player, {

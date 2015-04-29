@@ -1,6 +1,9 @@
 {{vm.state}}
 
 <div ng-if="vm.opponent.library">cards in opponent library: {{vm.opponent.library.cards}}</div>
+<div ng-if="vm.opponent.library.top">
+  <wd-game-card card="vm.opponent.library.top"/>
+</div>
 <div ng-if="vm.opponent.hand">cards in opponent hand: {{vm.opponent.hand.cards}}</div>
 
 <div ng-if="vm.battlefield && vm.opponent.battlefield">
@@ -22,10 +25,14 @@
 
 <div ng-if="vm.library">
   <p>cards in library: {{vm.library.cards}}</p>
+  <div ng-if="vm.library.top">
+    <wd-game-card card="vm.library.top"/>
+  </div>
   <md-button ng-click="vm.draw()">Draw</md-button>
   <md-button ng-click="vm.searchLibrary()">Search in Library</md-button>
   <md-button ng-click="vm.scry()">Scry</md-button>
   <md-button ng-click="vm.revealHand()">Reveal Hand</md-button>
+  <md-button ng-click="vm.revealTop(!vm.revealed)">Reveal Top</md-button>
 </div>
 
 <div class="hand" ng-if="vm.hand">

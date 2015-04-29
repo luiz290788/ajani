@@ -1,6 +1,8 @@
 from google.appengine.ext import ndb
+
+from services.game import library, response_util
 from services.model import Hand, Library
-from services.game import library
+
 
 def draw_process(game, player_id, incoming_event):
   hand_key = ndb.Key(Hand, player_id, parent=game.key)
@@ -14,7 +16,7 @@ def draw_process(game, player_id, incoming_event):
   hand_obj = library.draw(library_obj, hand_obj, count)
   
   hand_response = {'cards': [card.to_dict() for card in hand_obj.cards]}
-  library_response = {'cards': len(library_obj.cards)}
+  library_response = response_util.library_response(library_obj)
   
   response = {'hand': hand_response, 'library': library_response}
   notification = {'opponent_hand': {'cards': len(hand_obj.cards)},

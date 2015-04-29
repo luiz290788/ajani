@@ -21,6 +21,7 @@ SEARCH_LIBRARY = 'search_library'
 SHUFFLE = 'shuffle'
 SCRY = 'scry'
 REVEAL_HAND = 'reveal_hand'
+REVEAL_TOP = 'reveal_top'
 
 processors = {}
   
@@ -46,5 +47,6 @@ def _init_processors():
   processors[SHUFFLE] = shuffle.shuffle_process
   processors[SCRY]  = scry.scry_process
   processors[REVEAL_HAND] = reveal.reveal_hand_process
+  processors[REVEAL_TOP] = reveal.top_reveal_process
     
 _init_processors()

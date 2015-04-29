@@ -1,6 +1,7 @@
 from google.appengine.ext import ndb
 from services.game import state
 from services.model import Hand, Library, BattleField, Graveyard, Exile
+from services.game import response_util
 
 def _gen_objs(game, player_id):
   objs = []
@@ -35,7 +36,7 @@ def keep_process(game, player_id, incoming_event):
   ndb.put_multi(objs)
   
   hand_response = {'cards': [card.to_dict() for card in hand.cards]}
-  library_response = {'cards': len(library.cards)}
+  library_response = response_util.library_response(library)
   empty_response = {'cards': []}
   
   response = {'state': response_state, 'hand': hand_response, 'library': library_response,

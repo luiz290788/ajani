@@ -25,6 +25,10 @@
       vm.placement = $scope.placement;
       vm.readOnly = $scope.readOnly
       
+      $scope.$watch('card', function(newCard) {
+        vm.card = newCard;
+      });
+      
       $scope.$watch('vm.card.tapped', function(tapped) {
         if (tapped) {
           var rotate = 'rotate(90deg)';

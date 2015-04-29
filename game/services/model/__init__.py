@@ -32,6 +32,8 @@ class Card(ndb.Model):
   multiverse_id = ndb.StringProperty(required=True)
   instance_id = ndb.IntegerProperty(required=True)
   tapped = ndb.BooleanProperty(default=False)
+  morph = ndb.BooleanProperty(default=False)
+  manisfest = ndb.BooleanProperty(default=False)
 
 class CardHolder(ndb.Model):
   cards = ndb.StructuredProperty(Card, repeated=True)
@@ -40,12 +42,13 @@ class CardHolder(ndb.Model):
     for card in self.cards:
       if card.instance_id == instance_id:
         return card
-  
+
     return None
 
 class Hand(CardHolder): pass
 
-class Library(CardHolder): pass
+class Library(CardHolder): 
+  top_revealed = ndb.BooleanProperty(default=False)
 
 class BattleField(CardHolder): pass
 

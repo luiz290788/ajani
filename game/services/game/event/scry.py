@@ -1,4 +1,5 @@
 from services.game import library
+from services.game import response_util
 
 def _get_cards(lb, card_ids):
   cards = []
@@ -25,6 +26,8 @@ def scry_process(game, player_id, incoming_event):
     bottom_cards = _get_cards(lb, incoming_event['bottom_cards'])
     lb.cards = top_cards + lb.cards + bottom_cards
     lb.put()
-    response = {'scry': True}
+    library_response = response_util.library_response(lb)
+    response = {'scry': True, 'library': library_response}
+    notification = {'opponent_library': library_response} 
   
   return (response, notification)

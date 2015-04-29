@@ -83,6 +83,9 @@
         if (data.exile) {
           vm.exile = data.exile;
         }
+        if (data.library) {
+          vm.library = data.library;
+        }
       });
     });
     
@@ -120,6 +123,13 @@
         templateUrl: '/partials/game/searchlibrary.html'
       });
     };
+    
+    vm.revealTop = function(revealed) {
+      vm.revealed = revealed;
+      gameservices.revealTop(vm.gameId, vm.player, revealed).then(function(response) {
+        vm.library = response.data.library;
+      });
+    }
     
     function tapCallback(response) {
       var data = response.data;

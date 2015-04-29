@@ -1,7 +1,6 @@
 from google.appengine.ext import ndb
-
+from services.game import response_util
 from services.model import Hand, Library, BattleField, Graveyard, Exile
-
 
 # waiting for the opponent
 WAIT_OPPONENT = 'wait_opponent'
@@ -44,7 +43,7 @@ def _load_game_entities(game, player_id):
       else:
         response['opponent_hand'] = {'cards': len(obj.cards)}
     elif type(obj) is Library:
-      library_response = {'cards': len(obj.cards)}
+      library_response = response_util.library_response(obj)
       if obj.key.id() == player_id:
         response['library'] = library_response
       else:

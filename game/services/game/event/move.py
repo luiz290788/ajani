@@ -1,6 +1,7 @@
 from google.appengine.ext import ndb
 from services.model import BattleField, Graveyard, Exile, Hand, Library
 import random
+from services.game import response_util
 
 def _get_entity(entity_id):
   if entity_id == 'battlefield':
@@ -24,7 +25,9 @@ def _get_card_holders(game, player_id, ca_from, ca_to):
   return (objs[0], objs[1])
 
 def _entity_response(entity, hide_cards):
-  if type(entity) in hide_cards:
+  if type(entity) is Library:
+    response = response_util.library_response(entity)
+  elif type(entity) in hide_cards:
     response = {'cards': len(entity.cards)}
   else:
     response = {'cards': [card.to_dict() for card in entity.cards]}
@@ -47,6 +50,8 @@ def move_process(game, player_id, incoming_event):
     ca_to.cards.append(card)
     if type(ca_to) is BattleField and options.get('tapped', False):
       card.tapped = True
+    else:
+      card.tapped = False
 
   if type(ca_from) is Library:
     random.shuffle(ca_from.cards)
