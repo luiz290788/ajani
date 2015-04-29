@@ -1,6 +1,7 @@
 from google.appengine.ext import ndb
-from services.model import Hand, Library
+
 from services.game import response_util
+from services.model import Hand, Library
 
 
 def reveal_hand_process(game, player_id, incoming_event):
@@ -21,4 +22,13 @@ def top_reveal_process(game, player_id, incoming_event):
   response = {'library': library_response}
   notification = {'opponent_library': library_response}
   
+  return (response, notification)
+
+def reveal_card_process(game, player_id, incoming_event):
+  h = ndb.Key(Hand, player_id, parent=game.key).get()
+  card = h.get_card(incoming_event['card'])
+
+  response = {'revel_card': True}
+  notification = {'opponent_revealed_card': card.to_dict()}
+
   return (response, notification)

@@ -39,7 +39,7 @@ def move_process(game, player_id, incoming_event):
   to_entity = incoming_event['to']
   options = incoming_event['options']
   (ca_from, ca_to) = _get_card_holders(game, player_id, from_entity, to_entity)
-  
+
   if type(incoming_event['card']) in [int, long]:
     cards = [incoming_event['card']]
   elif type(incoming_event['card']) is list:
@@ -55,13 +55,13 @@ def move_process(game, player_id, incoming_event):
 
   if type(ca_from) is Library:
     random.shuffle(ca_from.cards)
-  
+
   ndb.put_multi([ca_from, ca_to])
 
   hide_cards = [Library]
   from_response = _entity_response(ca_from, hide_cards)
   to_response = _entity_response(ca_to, hide_cards)
-  
+
   hide_opponent_cards = [Hand, Library]
   from_notification = _entity_response(ca_from, hide_opponent_cards)
   to_notification = _entity_response(ca_to, hide_opponent_cards)
@@ -69,5 +69,5 @@ def move_process(game, player_id, incoming_event):
   response = {from_entity: from_response, to_entity: to_response}
   notification = {'opponent_' + from_entity: from_notification,
                   'opponent_' + to_entity: to_notification}
-  
+
   return (response, notification)

@@ -1,17 +1,17 @@
 (function(angular) {
-  
+
   angular.module('wd.game')
     .controller('battleFieldCtrl', battleFieldCtrl);
-  
+
   battleFieldCtrl.$inject = ['$scope', '$routeParams', 'gameservices', '$cookies', '$mdDialog', '$mdToast'];
-  
+
   function battleFieldCtrl($scope, $routeParams, gameservices, $cookies, $mdDialog, $mdToast) {
     var vm = this;
     vm.opponent = {};
     vm.gameId = $routeParams.id;
-    
+
     connect(vm.gameId);
-    
+
     $scope.$watch('vm.state', function(newState, oldState) {
       switch (newState) {
       case 'select_deck':
@@ -27,7 +27,7 @@
         break;
       }
     });
-    
+
     $scope.$on('socket.message', function(event, notification) {
       if (notification.state) {
         vm.state = notification.state;
@@ -46,6 +46,9 @@
       }
       if (notification.opponent_revealed_hand) {
         opponentHand(notification.opponent_revealed_hand);
+      }
+      if (notification.opponent_revealed_card) {
+        opponentRevelCard(notification.opponent_revealed_card)
       }
       $scope.$apply();
     });
@@ -88,7 +91,7 @@
         }
       });
     });
-    
+
     $scope.$on('wd.tap', function(event, card) {
       gameservices.tap(vm.gameId, vm.player, card.instance_id).then(tapCallback);
     });
@@ -96,11 +99,15 @@
     $scope.$on('wd.untap', function(event, card) {
       gameservices.untap(vm.gameId, vm.player, card.instance_id).then(tapCallback);
     });
-    
+
     vm.untapAll = function() {
       gameservices.untapAll(vm.gameId, vm.player).then(tapCallback)
     };
     
+    $scope.$on('wd.reveal', function(event, card) {
+      gameservices.revealCard(vm.gameId, vm.player, card.instance_id);
+    });
+
     vm.revealHand = function() {
       gameservices.revealHand(vm.gameId, vm.player).then(function(response) {
         $mdToast.show(
@@ -110,7 +117,7 @@
         );
       });
     }
-    
+
     vm.searchLibrary = function() {
       vm.searchLibraryDialog = $mdDialog.show({
         scope: $scope.$new(true, $scope),
@@ -123,14 +130,14 @@
         templateUrl: '/partials/game/searchlibrary.html'
       });
     };
-    
+
     vm.revealTop = function(revealed) {
       vm.revealed = revealed;
       gameservices.revealTop(vm.gameId, vm.player, revealed).then(function(response) {
         vm.library = response.data.library;
       });
     }
-    
+
     function tapCallback(response) {
       var data = response.data;
       if (data.battlefield) {
@@ -144,13 +151,13 @@
         vm.hand = response.data.hand;
       });
     };
-    
+
     vm.changeLife = function(delta) {
       gameservices.life(vm.gameId, vm.player, delta).then(function(response) {
         vm.life = response.data.life
       });
     };
-    
+
     vm.scry = function() {
       vm.scryDialog = $mdDialog.show({
         scope: $scope.$new(true, $scope),
@@ -163,7 +170,7 @@
         templateUrl: '/partials/game/scry.html'
       });
     };
-    
+
     function connect(gameId) {
       var callback = function(identification) {
         $cookies[gameId] = angular.toJson(identification);
@@ -179,25 +186,25 @@
         });
       }
     }
-    
+
     function openSocket(token) {
       vm.channel = new goog.appengine.Channel(token);
       vm.socket = vm.channel.open();
-      
+
       vm.socket.onmessage = function(message) {
         notification = angular.fromJson(message.data);
         $scope.$broadcast('socket.message', notification);
       };
-      
+
       vm.socket.onopen = function() {
         getState();
       };
     }
-    
+
     function getState() {
       gameservices.getState(vm.gameId, vm.player).then(setState);
     }
-    
+
     function selectDeck() {
       $mdDialog.show({
         controller: 'deckSelectorCtrl',
@@ -207,7 +214,7 @@
         gameservices.selectDeck(vm.gameId, vm.player, deck).then(setState);
       });
     }
-    
+
     function throwDice() {
       var newScope = $scope.$new(true, $scope);
       newScope.gameId = vm.gameId;
@@ -218,10 +225,10 @@
         controllerAs: 'vm',
         templateUrl: '/partials/game/dice.html'
       });
-      
+
       vm.diceDialog.then(openHand);
     }
-    
+
     function setState(response) {
       var data = response.data
 
@@ -235,7 +242,7 @@
       vm.life = data.life;
       vm.opponent.life = data.opponent_life;
     }
-    
+
     function openHand() {
       var newScope = $scope.$new(true, $scope);
       newScope.gameId = vm.gameId;
@@ -246,14 +253,14 @@
         controllerAs: 'vm',
         templateUrl: '/partials/game/openhand.html'
       });
-      
+
       vm.openHandDialog.then(function(openHand) {
         vm.hand = openHand.hand;
         vm.state = openHand.state;
         vm.library = openHand.library;
       });
     }
-    
+
     function opponentHand(hand) {
       vm.opponentHandDialog = $mdDialog.show({
         scope: $scope.$new(true, $scope),
@@ -265,6 +272,18 @@
         }
       });
     }
+    
+    function opponentRevelCard(card) {
+      vm.opponentRevealCardDialog = $mdDialog.show({
+        scope: $scope.$new(true, $scope),
+        controller: 'revealCardCtrl',
+        controllerAs: 'vm',
+        templateUrl: '/partials/game/revealcard.html',
+        locals: {
+          'card': card
+        }
+      });
+    }
   };
-  
+
 })(angular);

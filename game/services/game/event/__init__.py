@@ -22,6 +22,7 @@ SHUFFLE = 'shuffle'
 SCRY = 'scry'
 REVEAL_HAND = 'reveal_hand'
 REVEAL_TOP = 'reveal_top'
+REVEAL_CARD = 'reveal_card'
 
 processors = {}
   
@@ -48,5 +49,6 @@ def _init_processors():
   processors[SCRY]  = scry.scry_process
   processors[REVEAL_HAND] = reveal.reveal_hand_process
   processors[REVEAL_TOP] = reveal.top_reveal_process
+  processors[REVEAL_CARD] = reveal.reveal_card_process
     
 _init_processors()

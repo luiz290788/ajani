@@ -82,6 +82,7 @@
           actions.push(action('move(hand,battlefield,{"tapped":true})', 'Play tapped'));
           actions.push(action('move(hand,graveyard)', 'Discard'));
           actions.push(action('move(hand,exile)', 'Exile'));
+          actions.push(action('reveal', 'Reveal'));
           break;
         case 'battlefield':
           if (vm.card.tapped) {

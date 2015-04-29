@@ -25,8 +25,16 @@
       shuffle: shuffle,
       scry: scry,
       revealHand: revealHand,
-      revealTop: revealTop
+      revealTop: revealTop,
+      revealCard: revealCard
     };
+    
+    function revealCard(id, player, card) {
+      return $http.put('/api/game/' + id + '/' + player, {
+        'event': 'reveal_card',
+        'card': card
+      });
+    }
     
     function revealTop(id, player, revealed) {
       if (revealed === undefined) {
