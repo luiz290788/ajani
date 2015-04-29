@@ -24,9 +24,11 @@ def _get_card_holders(game, player_id, ca_from, ca_to):
   objs = ndb.get_multi([from_key, to_key]);
   return (objs[0], objs[1])
 
-def _entity_response(entity, hide_cards):
+def _entity_response(entity, hide_cards, opponent=False):
   if type(entity) is Library:
     response = response_util.library_response(entity)
+  if type(entity) is BattleField:
+    response = response_util.battlefield_response(entity, opponent)
   elif type(entity) in hide_cards:
     response = {'cards': len(entity.cards)}
   else:
@@ -34,13 +36,26 @@ def _entity_response(entity, hide_cards):
 
   return response
 
+def _set_flags(ca_to, card, options):
+  if type(ca_to) is BattleField:
+    card.tapped = options.get('tapped', False)
+    card.morph = options.get('morph', False)
+    card.manifest = options.get('manifest', False)
+  else:
+    card.tapped = False
+    card.morph = False
+    card.manifest = False
+  
+
 def move_process(game, player_id, incoming_event):
   from_entity = incoming_event['from']
   to_entity = incoming_event['to']
   options = incoming_event['options']
   (ca_from, ca_to) = _get_card_holders(game, player_id, from_entity, to_entity)
 
-  if type(incoming_event['card']) in [int, long]:
+  if options.get('manifest', False) and type(ca_from) is Library:
+    cards = [ca_from.cards[0].instance_id]
+  elif type(incoming_event['card']) in [int, long]:
     cards = [incoming_event['card']]
   elif type(incoming_event['card']) is list:
     cards = incoming_event['card']
@@ -48,10 +63,7 @@ def move_process(game, player_id, incoming_event):
     card = ca_from.get_card(card_id)
     ca_from.cards.remove(card)
     ca_to.cards.append(card)
-    if type(ca_to) is BattleField and options.get('tapped', False):
-      card.tapped = True
-    else:
-      card.tapped = False
+    _set_flags(ca_to, card, options)
 
   if type(ca_from) is Library:
     random.shuffle(ca_from.cards)
@@ -63,8 +75,8 @@ def move_process(game, player_id, incoming_event):
   to_response = _entity_response(ca_to, hide_cards)
 
   hide_opponent_cards = [Hand, Library]
-  from_notification = _entity_response(ca_from, hide_opponent_cards)
-  to_notification = _entity_response(ca_to, hide_opponent_cards)
+  from_notification = _entity_response(ca_from, hide_opponent_cards, opponent=True)
+  to_notification = _entity_response(ca_to, hide_opponent_cards, opponent=True)
 
   response = {from_entity: from_response, to_entity: to_response}
   notification = {'opponent_' + from_entity: from_notification,

@@ -33,7 +33,7 @@ class Card(ndb.Model):
   instance_id = ndb.IntegerProperty(required=True)
   tapped = ndb.BooleanProperty(default=False)
   morph = ndb.BooleanProperty(default=False)
-  manisfest = ndb.BooleanProperty(default=False)
+  manifest = ndb.BooleanProperty(default=False)
 
 class CardHolder(ndb.Model):
   cards = ndb.StructuredProperty(Card, repeated=True)

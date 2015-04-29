@@ -1,4 +1,7 @@
 <md-whiteframe context-menu class="md-whiteframe-z1" ng-click="vm.showActions($event)">
-  <img ng-src="http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid={{vm.card.multiverse_id}}&type=card"
+  <img ng-if="!vm.card.morph && !vm.card.manifest"
+       ng-src="http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid={{vm.card.multiverse_id}}&type=card"
        ng-style="vm.style">
+  <span ng-if="vm.card.morph" ng-style="vm.style">Morph card</span>
+  <span ng-if="vm.card.manifest" ng-style="vm.style">Manifest card</span>
 </md-whiteframe>

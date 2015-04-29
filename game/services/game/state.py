@@ -49,11 +49,10 @@ def _load_game_entities(game, player_id):
       else:
         response['opponent_library'] = library_response
     elif type(obj) is BattleField:
-      battlefield_response = {'cards': [card.to_dict() for card in obj.cards]}
       if obj.key.id() == player_id:
-        response['battlefield'] = battlefield_response
+        response['battlefield'] = response_util.battlefield_response(obj)
       else:
-        response['opponent_battlefield'] = battlefield_response
+        response['opponent_battlefield'] = response_util.battlefield_response(obj, opponent=True)
     elif type(obj) is Graveyard:
       graveyard_response = {'cards': [card.to_dict() for card in obj.cards]}
       if obj.key.id() == player_id:

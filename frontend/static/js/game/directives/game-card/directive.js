@@ -80,6 +80,7 @@
         case 'hand':
           actions.push(action('move(hand,battlefield)', 'Play'));
           actions.push(action('move(hand,battlefield,{"tapped":true})', 'Play tapped'));
+          actions.push(action('move(hand,battlefield,{"morph":true})', 'Morph'));
           actions.push(action('move(hand,graveyard)', 'Discard'));
           actions.push(action('move(hand,exile)', 'Exile'));
           actions.push(action('reveal', 'Reveal'));

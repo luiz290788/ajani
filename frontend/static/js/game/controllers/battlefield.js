@@ -171,6 +171,15 @@
       });
     };
 
+    vm.manifest = function() {
+      gameservices.move(vm.gameId, vm.player, [], 'library', 'battlefield', {
+        'manifest': true
+      }).then(function (response) {
+        vm.library = response.data.library;
+        vm.battlefield = response.data.battlefield;
+      });
+    }
+    
     function connect(gameId) {
       var callback = function(identification) {
         $cookies[gameId] = angular.toJson(identification);
