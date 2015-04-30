@@ -32,3 +32,12 @@ def reveal_card_process(game, player_id, incoming_event):
   notification = {'opponent_revealed_card': card.to_dict()}
 
   return (response, notification)
+
+def reveal_top_cards(game, player_id, incoming_event):
+  lb = ndb.Key(Library, player_id, parent=game.key).get()
+  count = incoming_event.get('count', 1)
+  cards = lb.cards[0:count]
+  cards_response = {'cards': [response_util.card_response(card) for card in cards]}
+  response = {'cards_revealed': cards_response}
+  notification = {'opponent_cards_revealed': cards_response}
+  return (response, notification)
