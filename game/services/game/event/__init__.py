@@ -25,30 +25,26 @@ REVEAL_TOP = 'reveal_top'
 REVEAL_CARD = 'reveal_card'
 
 processors = {}
-  
-def save(game, player_id, incoming_event):
-  event = Event(parent=game.key, data=incoming_event, player_id=player_id)
-  event.put()
 
 def get_processor(event_type):
   return processors[event_type]
 
 def _init_processors():
-  processors[SELECT_DECK] = selectdeck.select_deck_process
-  processors[THROW_DICE] = throwdice.throw_dice_process
-  processors[MULIGAN] = muligan.muligan_process
-  processors[KEEP] = keep.keep_process
-  processors[DRAW] = draw.draw_process
-  processors[LIFE] = life.lifecounter_process
-  processors[MOVE] = move.move_process
-  processors[TAP] = tap.tap_process
-  processors[UNTAP] = tap.untap_process
-  processors[UNTAP_ALL] = tap.untap_all_process
-  processors[SEARCH_LIBRARY] = searchlibrary.search_library_process
-  processors[SHUFFLE] = shuffle.shuffle_process
-  processors[SCRY]  = scry.scry_process
-  processors[REVEAL_HAND] = reveal.reveal_hand_process
-  processors[REVEAL_TOP] = reveal.top_reveal_process
-  processors[REVEAL_CARD] = reveal.reveal_card_process
+  processors[SELECT_DECK] = (None, selectdeck.process)
+  processors[THROW_DICE] = (None, throwdice.process)
+  processors[MULIGAN] = (muligan.load, muligan.process)
+  processors[KEEP] = (keep.load, keep.process)
+  processors[DRAW] = (draw.load, draw.process)
+  processors[LIFE] = (None, life.process)
+  processors[MOVE] = (move.load, move.process)
+  processors[TAP] = (tap.load, tap.process)
+  processors[UNTAP] = (tap.load, tap.untap_process)
+  processors[UNTAP_ALL] = (tap.load, tap.untap_all_process)
+  processors[SEARCH_LIBRARY] = (searchlibrary.load, searchlibrary.process)
+  processors[SHUFFLE] = (shuffle.load, shuffle.process)
+  processors[SCRY] = (scry.load, scry.process)
+  processors[REVEAL_HAND] = (reveal.hand_load, reveal.hand_process)
+  processors[REVEAL_TOP] = (reveal.top_load, reveal.top_process)
+  processors[REVEAL_CARD] = (reveal.card_load, reveal.card_process)
     
 _init_processors()

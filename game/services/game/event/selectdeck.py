@@ -11,7 +11,7 @@ def _set_deck(game, player_id, incoming_event):
 def _decks_selected(game):
   return game.deck_player_0 is not None and game.deck_player_1 is not None
 
-def select_deck_process(game, player_id, incoming_event):
+def process(incoming_event, player_id, game):
   _set_deck(game, player_id, incoming_event)
   
   response = {}
@@ -23,6 +23,7 @@ def select_deck_process(game, player_id, incoming_event):
     notification = {'state': THROW_DICE}
   else:
     response['state'] = WAIT_OPPONENT
-  game.put()
 
-  return (response, notification)
+  to_put = [game];
+
+  return (response, notification, to_put)

@@ -4,7 +4,7 @@ from services.game.state import OPENING_HAND
 def _is_player_0(game, player_id):
   return game.player_0 == player_id
 
-def throw_dice_process(game, player_id, incoming_event):
+def process(incoming_event, player_id, game):
   player_0 = _is_player_0(game, player_id)
 
   throw_dice = False
@@ -29,9 +29,7 @@ def throw_dice_process(game, player_id, incoming_event):
     value = game.dice_player_0
   else:
     value = game.dice_player_1
-    
-  game.put()
 
   response = {'dice_value': value, 'state': game.state}
 
-  return (response, response)
+  return (response, response, [game])

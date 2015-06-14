@@ -1,6 +1,6 @@
 import re
 
-def lifecounter_process(game, player_id, incoming_event):
+def process(incoming_event, player_id, game):
   delta = incoming_event['delta']
   plus = None
   if type(delta) is unicode or type(delta) is str:
@@ -18,7 +18,6 @@ def lifecounter_process(game, player_id, incoming_event):
       game.life_player_0 = game.life_player_0 + delta
     else:
       game.life_player_1 = game.life_player_1 + delta
-    game.put()
   
   if game.player_0 == player_id:
     life = game.life_player_0
@@ -28,4 +27,4 @@ def lifecounter_process(game, player_id, incoming_event):
   response = {'life': life}
   notification = {'opponent_life': life}
   
-  return (response, notification)
+  return (response, notification, [game])

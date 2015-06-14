@@ -16,7 +16,7 @@ def generate(game, player_id):
   
   card_instance = 0
   for multiverse_id, count in deck['cards'].iteritems():
-    for times in range(count):  # @UnusedVariable
+    for _ in range(count):
       card = Card(multiverse_id=multiverse_id, instance_id=card_instance)
       library.cards.append(card)
       card_instance = card_instance + 1
@@ -35,7 +35,6 @@ def get(game, player_id):
 def draw(library, hand_obj, count=1):
   hand_obj.cards.extend(library.cards[0:count])
   library.cards = library.cards[count:]
-  ndb.put_multi([hand_obj, library])
   
   return hand_obj
 

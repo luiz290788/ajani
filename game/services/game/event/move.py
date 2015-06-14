@@ -1,7 +1,10 @@
-from google.appengine.ext import ndb
-from services.model import BattleField, Graveyard, Exile, Hand, Library
 import random
+
+from google.appengine.ext import ndb
+
 from services.game import response_util
+from services.model import BattleField, Graveyard, Exile, Hand, Library
+
 
 def _get_entity(entity_id):
   if entity_id == 'battlefield':
@@ -16,13 +19,12 @@ def _get_entity(entity_id):
     entity = Library
   return entity
 
-def _get_card_holders(game, player_id, ca_from, ca_to):
+def _get_card_holders_keys(game_key, player_id, ca_from, ca_to):
   from_entity = _get_entity(ca_from)
   to_entity = _get_entity(ca_to)
-  from_key = ndb.Key(from_entity, player_id, parent=game.key)
-  to_key = ndb.Key(to_entity, player_id, parent=game.key)
-  objs = ndb.get_multi([from_key, to_key]);
-  return (objs[0], objs[1])
+  from_key = ndb.Key(from_entity, player_id, parent=game_key)
+  to_key = ndb.Key(to_entity, player_id, parent=game_key)
+  return [from_key, to_key]
 
 def _entity_response(entity, hide_cards, opponent=False):
   if type(entity) is Library:
@@ -46,12 +48,13 @@ def _set_flags(ca_to, card, options):
     card.morph = False
     card.manifest = False
   
-
-def move_process(game, player_id, incoming_event):
+def load(incoming_event, player_id, game_key):
   from_entity = incoming_event['from']
   to_entity = incoming_event['to']
+  return _get_card_holders_keys(game_key, player_id, from_entity, to_entity)
+
+def process(incoming_event, player_id, game, ca_from, ca_to):
   options = incoming_event['options']
-  (ca_from, ca_to) = _get_card_holders(game, player_id, from_entity, to_entity)
 
   if options.get('manifest', False) and type(ca_from) is Library:
     cards = [ca_from.cards[0].instance_id]
@@ -68,7 +71,7 @@ def move_process(game, player_id, incoming_event):
   if type(ca_from) is Library:
     random.shuffle(ca_from.cards)
 
-  ndb.put_multi([ca_from, ca_to])
+  to_put = [ca_from, ca_to]
 
   hide_cards = [Library]
   from_response = _entity_response(ca_from, hide_cards)
@@ -78,8 +81,11 @@ def move_process(game, player_id, incoming_event):
   from_notification = _entity_response(ca_from, hide_opponent_cards, opponent=True)
   to_notification = _entity_response(ca_to, hide_opponent_cards, opponent=True)
 
+
+  from_entity = incoming_event['from']
+  to_entity = incoming_event['to']
   response = {from_entity: from_response, to_entity: to_response}
   notification = {'opponent_' + from_entity: from_notification,
                   'opponent_' + to_entity: to_notification}
 
-  return (response, notification)
+  return (response, notification, to_put)

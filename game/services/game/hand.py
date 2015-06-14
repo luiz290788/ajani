@@ -15,4 +15,6 @@ def get(game_key, player_id):
 def generate(game, player_id):
   library_obj = library.get(game, player_id)
   hand_obj = Hand(parent=game.key, id=player_id, cards=[])
-  return library.draw(library_obj, hand_obj, 7)
+  hand_obj = library.draw(library_obj, hand_obj, 7)
+  ndb.put_multi([library_obj, hand_obj])
+  return hand_obj

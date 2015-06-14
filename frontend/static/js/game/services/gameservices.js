@@ -30,7 +30,7 @@
     };
     
     function revealCard(id, player, card) {
-      return $http.put('/api/game/' + id + '/' + player, {
+      return $http.post('/api/game/' + id + '/' + player, {
         'event': 'reveal_card',
         'card': card
       });
@@ -40,57 +40,57 @@
       if (revealed === undefined) {
         revealed = true;
       }
-      return $http.put('/api/game/' + id + '/' + player, {
+      return $http.post('/api/game/' + id + '/' + player, {
         'event': 'reveal_top',
         'top_revealed': revealed
       });
     }
     
     function revealHand(id, player) {
-      return $http.put('/api/game/' + id + '/' + player, {
+      return $http.post('/api/game/' + id + '/' + player, {
         'event': 'reveal_hand'
       });
     }
     
     function scry(id, player, options) {
       var event = angular.extend({'event': 'scry'}, options);
-      return $http.put('/api/game/' + id + '/' + player, event);
+      return $http.post('/api/game/' + id + '/' + player, event);
     }
     
     function shuffle(id, player) {
-      return $http.put('/api/game/' + id + '/' + player, {
+      return $http.post('/api/game/' + id + '/' + player, {
         'event': 'shuffle'
       });
     }
     
     function searchLibrary(id, player) {
-      return $http.put('/api/game/' + id + '/' + player, {
+      return $http.post('/api/game/' + id + '/' + player, {
         'event': 'search_library'
       });
     }
     
     function untapAll(id, player) {
-      return $http.put('/api/game/' + id + '/' + player, {
+      return $http.post('/api/game/' + id + '/' + player, {
         'event': 'untap_all'
       });
     }
     
     function tap(id, player, card) {
-      return $http.put('/api/game/' + id + '/' + player, {
+      return $http.post('/api/game/' + id + '/' + player, {
         'event': 'tap',
         'card': card
       });
     }
     
     function untap(id, player, card) {
-      return $http.put('/api/game/' + id + '/' + player, {
+      return $http.post('/api/game/' + id + '/' + player, {
         'event': 'untap',
         'card': card
       });
     }
     
     function move(id, player, card, from, to, options) {
-      return $http.put('/api/game/' + id + '/' + player, {
+      return $http.post('/api/game/' + id + '/' + player, {
         'event': 'move',
         'card': card,
         'from': from,
@@ -100,7 +100,7 @@
     }
     
     function life(id, player, delta) {
-      return $http.put('/api/game/' + id + '/' + player, {
+      return $http.post('/api/game/' + id + '/' + player, {
         'event': 'life',
         'delta': delta
       });
@@ -110,27 +110,27 @@
       if (count === undefined) {
         count = 1
       }
-      return $http.put('/api/game/' + id + '/' + player, {
+      return $http.post('/api/game/' + id + '/' + player, {
         'event': 'draw',
         'count': count
       });
     }
     
     function play(id, player, card) {
-      return $http.put('/api/game/' + id + '/' + player, {
+      return $http.post('/api/game/' + id + '/' + player, {
         'event': 'play',
         'card': card
       });
     }
     
     function keep(id, player) {
-      return $http.put('/api/game/' + id + '/' + player, {
+      return $http.post('/api/game/' + id + '/' + player, {
         'event': 'keep'
       });
     }
     
     function muligan(id, player) {
-      return $http.put('/api/game/' + id + '/' + player, {
+      return $http.post('/api/game/' + id + '/' + player, {
         'event': 'muligan'
       });
     }
@@ -140,13 +140,13 @@
     }
     
     function throwDice(id, player) {
-      return $http.put('/api/game/' + id + '/' + player, {
+      return $http.post('/api/game/' + id + '/' + player, {
         'event': 'throw_dice'
       });
     }
     
     function selectDeck(id, player, deck) {
-      return $http.put('/api/game/' + id + '/' + player, {
+      return $http.post('/api/game/' + id + '/' + player, {
         'event': 'select_deck',
         'deck': parseInt(deck)
       });
@@ -157,11 +157,11 @@
     }
     
     function create(kind) {
-      return $http.put('/api/game/' + kind);
+      return $http.post('/api/game/' + kind);
     }
     
     function connect(id) {
-      return $http.post('/api/game/' + id);
+      return $http.put('/api/game/' + id);
     }
   };
   
